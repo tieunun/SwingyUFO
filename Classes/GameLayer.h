@@ -6,7 +6,18 @@
 
 class GameLayer : public cocos2d::Layer {
 private:
+    
+    typedef enum {
+        WaitingForTap,
+        Starting,
+        Running,
+        GameOver
+    } GameState;
+    
     cocos2d::Size mScreenSize;
+    
+    GameState mGameState;
+    float mStartDelayTimer;
     
     Player *mPlayer;
     
@@ -17,6 +28,7 @@ private:
     cocos2d::Action *mGetReadyActionOut;
     cocos2d::Action *mTapToStartActionIn;
     cocos2d::Action *mTapToStartActionOut;
+    
     
 public:
     GameLayer();

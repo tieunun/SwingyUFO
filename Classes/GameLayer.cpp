@@ -2,7 +2,10 @@
 
 using namespace cocos2d;
 
-GameLayer::GameLayer() {}
+#define LABEL_SPEED 0.55f
+#define START_DELAY 1.75f
+
+GameLayer::GameLayer() :mGameState(WaitingForTap), mStartDelayTimer(0.0f) {}
 
 GameLayer::~GameLayer() {
     CC_SAFE_RELEASE_NULL(mGetReadyActionIn);
@@ -61,7 +64,7 @@ void GameLayer::populateScene() {
     mGetReadyLabel->setPosition(beginPos);
     
     // The "Get Ready" label will move downwards from beginPos to endPos
-    mGetReadyActionIn = EaseElasticOut::create(MoveTo::create(1.3f, endPos), 0.5f);
+    mGetReadyActionIn = MoveTo::create(LABEL_SPEED, endPos);
     mGetReadyActionIn->retain();
     
     endPos = Vec2(endPos.x, beginPos.y);
@@ -70,9 +73,9 @@ void GameLayer::populateScene() {
         this->mGetReadyLabel->setPosition(beginPos);
     };
     
-    // After the user taps the screen, we will run a sequence that will move the label up and
-    // then reset the label's position
-    mGetReadyActionOut = Sequence::create(EaseElasticIn::create(MoveTo::create(1.3f, endPos), 0.5f),
+    // After the user taps the screen for the first time, we will run a sequence that will
+    // move the label upwards and then reset the label's position
+    mGetReadyActionOut = Sequence::create(MoveTo::create(LABEL_SPEED, endPos),
                                           CallFunc::create(resetGetReadyPos),
                                           nullptr);
     mGetReadyActionOut->retain();
@@ -85,7 +88,7 @@ void GameLayer::populateScene() {
     mTapToStartLabel->setPosition(beginPos);
     
     // The "Tap to Start" label will move left to right from beginPos to endPos
-    mTapToStartActionIn = EaseElasticOut::create(MoveTo::create(1.3f, endPos), 0.5f);
+    mTapToStartActionIn = MoveTo::create(LABEL_SPEED, endPos);
     mTapToStartActionIn->retain();
     
     endPos = Vec2(mScreenSize.width - beginPos.x, endPos.y);
@@ -94,22 +97,25 @@ void GameLayer::populateScene() {
         this->mTapToStartLabel->setPosition(beginPos);
     };
     
-    // After the user taps the screen, we will run a sequence that will move the label more to
-    // the right and then reset the label's position
-    mGetReadyActionOut = Sequence::create(EaseElasticIn::create(MoveTo::create(1.3f, endPos), 0.5f),
-                                          CallFunc::create(resetTapPos),
-                                          nullptr);
-    mGetReadyActionOut->retain();
+    // After the user taps the screen for the first time, we will run a sequence that will
+    // move the label more to the right and then reset the label's position
+    mTapToStartActionOut = Sequence::create(MoveTo::create(LABEL_SPEED, endPos),
+                                            CallFunc::create(resetTapPos),
+                                            nullptr);
+    
+    
+    mTapToStartActionOut->retain();
     
     this->addChild(mGetReadyLabel);
     this->addChild(mTapToStartLabel);
     
+    // Move the labels into the view of the user
     mGetReadyLabel->runAction(mGetReadyActionIn);
     mTapToStartLabel->runAction(mTapToStartActionIn);
 }
 
 void GameLayer::addEvents() {
-    // Register to listen for touch events
+    // Register to listen for single touch events
     auto touchEventListener = EventListenerTouchOneByOne::create();
     touchEventListener->setSwallowTouches(true);
     touchEventListener->onTouchBegan = std::bind(&GameLayer::onTouchBegan,
@@ -122,10 +128,57 @@ void GameLayer::addEvents() {
 }
 
 void GameLayer::update(float dt) {
+    
     mPlayer->update(dt);
+    
+    switch (mGameState) {
+            
+        case WaitingForTap:
+            break;
+            
+        case Starting:
+            // Adds a short delay before the obstacles come into view
+            if (mStartDelayTimer < START_DELAY) {
+                mStartDelayTimer += dt;
+            } else {
+                mStartDelayTimer = 0.0f;
+                mGameState = Running;
+                mPlayer->setDirection((rand() % 2 == 0) ? Player::Direction::LEFT : Player::Direction::RIGHT);
+            }
+            break;
+            
+        case Running:
+            break;
+            
+        case GameOver:
+            break;
+    }
 }
 
 bool GameLayer::onTouchBegan(Touch *touch, Event *event) {
-    mPlayer->switchDirections();
+    
+    switch (mGameState) {
+        case WaitingForTap:
+            if (mGetReadyActionIn->isDone() && mTapToStartActionIn->isDone()) {
+                CCLOG("Both actions done");
+                mGetReadyLabel->runAction(mGetReadyActionOut);
+                mTapToStartLabel->runAction(mTapToStartActionOut);
+                mGameState = Starting;
+            } else {
+                CCLOG("Actions are not done");
+            }
+            break;
+            
+        case Starting:
+            break;
+            
+        case Running:
+            mPlayer->switchDirections();
+            break;
+            
+        case GameOver:
+            break;
+    }
+    
     return true;
 }
