@@ -6,9 +6,22 @@
 
 class GameLayer : public cocos2d::Layer {
 private:
-    Player *player;
+    cocos2d::Size mScreenSize;
+    
+    Player *mPlayer;
+    
+    cocos2d::Label *mGetReadyLabel;
+    cocos2d::Label *mTapToStartLabel;
+    
+    cocos2d::Action *mGetReadyActionIn;
+    cocos2d::Action *mGetReadyActionOut;
+    cocos2d::Action *mTapToStartActionIn;
+    cocos2d::Action *mTapToStartActionOut;
     
 public:
+    GameLayer();
+    ~GameLayer();
+    
     static GameLayer* create();
     static cocos2d::Scene* createScene();
     

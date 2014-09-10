@@ -5,9 +5,9 @@
 
 #include "Player.h"
 
-Player::Player() {
-    facingDirection = NEITHER;
-}
+using namespace cocos2d;
+
+Player::Player() : mFacingDirection(NEITHER) {}
 
 Player* Player::create() {
     auto player = new Player();
@@ -20,22 +20,34 @@ Player* Player::create() {
     return nullptr;
 }
 
-void Player::update(float dt) {
+bool Player::init() {
     
+    if (!Sprite::init()) { return false; }
+    
+    mScreenSize = Director::getInstance()->getWinSize();
+    
+    this->setTextureRect(Rect(0, 0, 64, 64));
+    this->setColor(Color3B::BLUE);
+    this->setPosition(Vec2(mScreenSize.width * 0.5f, mScreenSize.height * 0.8f));
+    
+    return true;
+}
+
+void Player::update(float dt) {
 }
 
 void Player::switchDirections() {
     
-    switch (facingDirection) {
+    switch (mFacingDirection) {
             
         case LEFT:
             CCLOG("Switching from LEFT to RIGHT");
-            facingDirection = RIGHT;
+            mFacingDirection = RIGHT;
             break;
             
         case RIGHT:
             CCLOG("Switching from RIGHT to LEFT");
-            facingDirection = LEFT;
+            mFacingDirection = LEFT;
             break;
             
         default:

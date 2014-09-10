@@ -16,7 +16,8 @@ class Player : public cocos2d::Sprite {
         NEITHER
     } Direction;
     
-    Direction facingDirection;
+    cocos2d::Size mScreenSize;
+    Direction mFacingDirection;
   
 public:
     Player();
@@ -24,7 +25,9 @@ public:
     static Player* create();
     
     // overrides
+    bool init() override;
     void update(float dt) override;
+    
     
     // etc
     void switchDirections();
