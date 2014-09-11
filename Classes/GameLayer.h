@@ -28,7 +28,9 @@ private:
     cocos2d::Action *mGetReadyActionOut;
     cocos2d::Action *mTapToStartActionIn;
     cocos2d::Action *mTapToStartActionOut;
+    cocos2d::Action *mSpawnPlatformsForever;
     
+    void spawnPlatformPair();
     
 public:
     GameLayer();

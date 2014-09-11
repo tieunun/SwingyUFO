@@ -61,6 +61,7 @@
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
 		C994231B19BEF35F00A1E772 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C994231919BEF35F00A1E772 /* Player.cpp */; };
 		C994231C19BEF35F00A1E772 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C994231919BEF35F00A1E772 /* Player.cpp */; };
+		C9FAD43119C154CD00EDD2FF /* PlatformPair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C9FAD42F19C154CD00EDD2FF /* PlatformPair.cpp */; };
 		D44C620C132DFF330009C878 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620B132DFF330009C878 /* OpenAL.framework */; };
 		D44C620E132DFF430009C878 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620D132DFF430009C878 /* AVFoundation.framework */; };
 		D44C6210132DFF4E0009C878 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620F132DFF4E0009C878 /* AudioToolbox.framework */; };
@@ -258,6 +259,8 @@
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C994231919BEF35F00A1E772 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = ../Classes/Player.cpp; sourceTree = "<group>"; };
 		C994231A19BEF35F00A1E772 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = ../Classes/Player.h; sourceTree = "<group>"; };
+		C9FAD42F19C154CD00EDD2FF /* PlatformPair.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PlatformPair.cpp; path = ../Classes/PlatformPair.cpp; sourceTree = "<group>"; };
+		C9FAD43019C154CD00EDD2FF /* PlatformPair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlatformPair.h; path = ../Classes/PlatformPair.h; sourceTree = "<group>"; };
 		D44C620B132DFF330009C878 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		D44C620D132DFF430009C878 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		D44C620F132DFF4E0009C878 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -337,6 +340,8 @@
 				1AFAF8B616D35DE700DB1158 /* GameLayer.h */,
 				C994231919BEF35F00A1E772 /* Player.cpp */,
 				C994231A19BEF35F00A1E772 /* Player.h */,
+				C9FAD42F19C154CD00EDD2FF /* PlatformPair.cpp */,
+				C9FAD43019C154CD00EDD2FF /* PlatformPair.h */,
 			);
 			name = Classes;
 			path = ../classes;
@@ -660,6 +665,7 @@
 				C994231B19BEF35F00A1E772 /* Player.cpp in Sources */,
 				1AFAF8B716D35DE700DB1158 /* AppDelegate.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
+				C9FAD43119C154CD00EDD2FF /* PlatformPair.cpp in Sources */,
 				1AFAF8B816D35DE700DB1158 /* GameLayer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

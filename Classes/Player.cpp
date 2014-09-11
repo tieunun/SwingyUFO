@@ -7,9 +7,14 @@
 
 using namespace cocos2d;
 
-#define ACCELERATION_X 480.0f
+#define PLAYER_HEIGHT 64
+#define PLAYER_WIDTH 64
 
-Player::Player() : mVelocity(Vec2::ZERO), mAcceleration(ACCELERATION_X, 0.0f), mFacingDirection(NEITHER) {}
+Player::Player() : mVelocity(Vec2::ZERO), mFacingDirection(NEITHER) {
+    mScreenSize = Director::getInstance()->getWinSize();
+    mAcceleration = Vec2(mScreenSize.width, 0.0f);
+    CCLOG("Acceleration X = %f", mAcceleration.x);
+}
 
 Player* Player::create() {
     auto player = new Player();
@@ -26,9 +31,7 @@ bool Player::init() {
     
     if (!Sprite::init()) { return false; }
     
-    mScreenSize = Director::getInstance()->getWinSize();
-    
-    this->setTextureRect(Rect(0, 0, 64, 64));
+    this->setTextureRect(Rect(0.0f, 0.0f, PLAYER_WIDTH, PLAYER_HEIGHT));
     this->setColor(Color3B::BLUE);
     this->reset();
     
@@ -54,6 +57,8 @@ void Player::update(float dt) {
     // Velocity capping
     if (mVelocity.x > 480.0f) { mVelocity.x = 480.0f; }
     if (mVelocity.x < -480.0f) { mVelocity.x = -480.0f; }
+    
+    CCLOG("mVelocity.x = %f", mVelocity.x);
     
     float posX = this->getPositionX() + (mVelocity.x * dt);
     

@@ -20,7 +20,7 @@ private:
     cocos2d::Size mScreenSize;
     
     cocos2d::Vec2 mVelocity;
-    const cocos2d::Vec2 mAcceleration;
+    cocos2d::Vec2 mAcceleration;
     
     Direction mFacingDirection;
   

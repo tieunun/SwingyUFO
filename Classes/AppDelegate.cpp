@@ -23,13 +23,13 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     Size screenSize = glview->getFrameSize();
     Size designSize = Size(480, 800);
+    glview->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::FIXED_HEIGHT);
     Size adjustedSize = director->getWinSize();
 
     CCLOG("actual screen width: %f, actual screen height: %f", screenSize.width, screenSize.height);
     CCLOG("design screen width: %f, design screen height: %f", designSize.width, designSize.height);
     CCLOG("adjusted screen width: %f, adjusted screen height: %f", adjustedSize.width, adjustedSize.height);
     
-    glview->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::FIXED_HEIGHT);
     
     // Determine what scale factor will be used for positions, sizes, etc.
     float scale = 1.0f;
