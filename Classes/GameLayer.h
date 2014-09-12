@@ -14,12 +14,11 @@ private:
         GameOver
     } GameState;
     
-    cocos2d::Size mScreenSize;
-    
     GameState mGameState;
+    Player *mPlayer;
     float mStartDelayTimer;
     
-    Player *mPlayer;
+    cocos2d::Size mScreenSize;
     
     cocos2d::Label *mGetReadyLabel;
     cocos2d::Label *mTapToStartLabel;
@@ -29,6 +28,8 @@ private:
     cocos2d::Action *mTapToStartActionIn;
     cocos2d::Action *mTapToStartActionOut;
     cocos2d::Action *mSpawnPlatformsForever;
+    
+    cocos2d::PhysicsWorld *mPhysWorld;
     
     void spawnPlatformPair();
     
@@ -47,6 +48,8 @@ public:
     // etc
     void addEvents();
     void populateScene();
+    void setPhysicsWorld(cocos2d::PhysicsWorld *world) { mPhysWorld = world; }
+    bool onContactBegin(cocos2d::PhysicsContact &contact);
 };
 
 #endif

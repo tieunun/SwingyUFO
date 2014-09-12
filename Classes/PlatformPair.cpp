@@ -4,6 +4,7 @@
 //
 
 #include "PlatformPair.h"
+#include "Config.h"
 
 using namespace cocos2d;
 
@@ -11,7 +12,7 @@ using namespace cocos2d;
 #define WIDTH_16_9 450.0f
 #define PLATFORM_HEIGHT 32
 #define PLATFORM_WIDTH (600.0f - GAP_DISTANCE)
-#define PLATFORM_TRAVEL_TIME 6.0f
+#define PLATFORM_TRAVEL_TIME 5.0f
 
 PlatformPair* PlatformPair::create() {
     auto pair = new PlatformPair();
@@ -42,8 +43,8 @@ bool PlatformPair::init() {
     minStartX = halfDiff - halfWidth;
     maxStartX = mScreenSize.width - halfDiff - GAP_DISTANCE - halfWidth;
     
-    CCLOG("minStartX = %f", minStartX);
-    CCLOG("maxStartX = %f", maxStartX);
+    //    CCLOG("minStartX = %f", minStartX);
+    //    CCLOG("maxStartX = %f", maxStartX);
     
     // Random number between minStartX and maxStartX
     startPos.x = (rand() % int(maxStartX - minStartX + 1)) + minStartX;
@@ -59,7 +60,14 @@ bool PlatformPair::init() {
 
 void PlatformPair::addPlatform(Vec2 pos) {
     auto plat = Sprite::create();
-    plat->setTextureRect(Rect(0, 0, PLATFORM_WIDTH, PLATFORM_HEIGHT));
+    Rect rect = Rect(0, 0, PLATFORM_WIDTH, PLATFORM_HEIGHT);
+    auto body = PhysicsBody::createBox(rect.size);
+    body->setDynamic(false);    // Platforms are not affected by gravity
+    body->setCollisionBitmask(0);
+    body->setCategoryBitmask(PhysicsGroup::PLATFORM);
+    body->setContactTestBitmask(PhysicsGroup::PLAYER);
+    plat->setPhysicsBody(body);
+    plat->setTextureRect(rect);
     plat->setColor(Color3B(0, 255, 0));
     plat->setPosition(pos);
     this->addChild(plat);

@@ -1,5 +1,6 @@
 #include "GameLayer.h"
 #include "PlatformPair.h"
+#include "Config.h"
 
 using namespace cocos2d;
 
@@ -7,7 +8,10 @@ using namespace cocos2d;
 #define START_DELAY 1.75f
 #define SPAWN_DELAY 2.5f
 
-GameLayer::GameLayer() :mGameState(WaitingForTap), mStartDelayTimer(0.0f) {}
+GameLayer::GameLayer()
+: mGameState(WaitingForTap)
+, mStartDelayTimer(0.0f)
+{}
 
 GameLayer::~GameLayer() {
     CC_SAFE_RELEASE_NULL(mGetReadyActionIn);
@@ -20,10 +24,16 @@ GameLayer::~GameLayer() {
 Scene* GameLayer::createScene() {
     
     // Create the game scene that the director will use
-    auto scene = Scene::create();
+    auto scene = Scene::createWithPhysics();
+    auto physWorld = scene->getPhysicsWorld();
+    
+    // Make physical bodies visible for debugging purposes
+    physWorld->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    physWorld->setGravity(Vec2::ZERO);
     
     // Create the main game layer and add it to the scene
     auto layer = GameLayer::create();
+    layer->setPhysicsWorld(physWorld);
     scene->addChild(layer);
 
     return scene;
@@ -124,6 +134,9 @@ void GameLayer::populateScene() {
 }
 
 void GameLayer::addEvents() {
+    
+    auto eventDispatcher = Director::getInstance()->getEventDispatcher();
+    
     // Register to listen for single touch events
     auto touchEventListener = EventListenerTouchOneByOne::create();
     touchEventListener->setSwallowTouches(true);
@@ -131,9 +144,14 @@ void GameLayer::addEvents() {
                                                  this,
                                                  std::placeholders::_1,
                                                  std::placeholders::_2);
-    
-    auto eventDispatcher = Director::getInstance()->getEventDispatcher();
     eventDispatcher->addEventListenerWithSceneGraphPriority(touchEventListener, this);
+    
+    // Register to listen for contact between physics bodies
+    auto contactEventListener = EventListenerPhysicsContact::create();
+    contactEventListener->onContactBegin = std::bind(&GameLayer::onContactBegin,
+                                                     this,
+                                                     std::placeholders::_1);
+    eventDispatcher->addEventListenerWithSceneGraphPriority(contactEventListener, this);
 }
 
 void GameLayer::update(float dt) {
@@ -171,13 +189,10 @@ bool GameLayer::onTouchBegan(Touch *touch, Event *event) {
     switch (mGameState) {
         case WaitingForTap:
             if (mGetReadyActionIn->isDone() && mTapToStartActionIn->isDone()) {
-                CCLOG("Both actions done");
                 // Move the labels out of the way
                 mGetReadyLabel->runAction(mGetReadyActionOut);
                 mTapToStartLabel->runAction(mTapToStartActionOut);
                 mGameState = Starting;
-            } else {
-                CCLOG("Actions are not done");
             }
             break;
             
@@ -192,6 +207,11 @@ bool GameLayer::onTouchBegan(Touch *touch, Event *event) {
             break;
     }
     
+    return true;
+}
+
+bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
+    CCLOG("Contact detected");
     return true;
 }
 

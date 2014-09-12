@@ -4,6 +4,7 @@
 //
 
 #include "Player.h"
+#include "Config.h"
 
 using namespace cocos2d;
 
@@ -12,8 +13,7 @@ using namespace cocos2d;
 
 Player::Player() : mVelocity(Vec2::ZERO), mFacingDirection(NEITHER) {
     mScreenSize = Director::getInstance()->getWinSize();
-    mAcceleration = Vec2(mScreenSize.width, 0.0f);
-    CCLOG("Acceleration X = %f", mAcceleration.x);
+    mAcceleration = Vec2(mScreenSize.width * 1.5f, 0.0f);
 }
 
 Player* Player::create() {
@@ -31,7 +31,15 @@ bool Player::init() {
     
     if (!Sprite::init()) { return false; }
     
-    this->setTextureRect(Rect(0.0f, 0.0f, PLAYER_WIDTH, PLAYER_HEIGHT));
+    Rect rect = Rect(0.0f, 0.0f, PLAYER_WIDTH, PLAYER_HEIGHT);
+    
+    auto body = PhysicsBody::createBox(rect.size);
+    body->setGroup(PhysicsGroup::PLAYER);
+    body->setCollisionBitmask(0);
+    body->setCategoryBitmask(PhysicsGroup::PLAYER);
+    body->setContactTestBitmask(PhysicsGroup::PLATFORM);
+    this->setPhysicsBody(body);
+    this->setTextureRect(rect);
     this->setColor(Color3B::BLUE);
     this->reset();
     
@@ -58,8 +66,6 @@ void Player::update(float dt) {
     if (mVelocity.x > 480.0f) { mVelocity.x = 480.0f; }
     if (mVelocity.x < -480.0f) { mVelocity.x = -480.0f; }
     
-    CCLOG("mVelocity.x = %f", mVelocity.x);
-    
     float posX = this->getPositionX() + (mVelocity.x * dt);
     
     // Boundary checks
@@ -74,6 +80,7 @@ void Player::reset() {
     this->setPosition(Vec2(mScreenSize.width * 0.5f, mScreenSize.height * 0.8f));
     mVelocity = Vec2::ZERO;
     mFacingDirection = NEITHER;
+    this->getPhysicsBody()->resetForces();
 }
 
 void Player::switchDirections() {
