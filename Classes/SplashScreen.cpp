@@ -1,0 +1,58 @@
+//
+//  SplashScreen.cpp
+//  SwingyChute
+//
+
+#include "GameLayer.h"
+#include "SplashScreen.h"
+
+using namespace cocos2d;
+
+#define WAIT_TIME 2.0f
+
+SplashScreen::SplashScreen()
+: mTimer(0.0f)
+{}
+
+Scene* SplashScreen::createScene() {
+    auto scene = Scene::create();
+    auto splash = SplashScreen::create();
+    scene->addChild(splash);
+    return scene;
+}
+
+SplashScreen* SplashScreen::create() {
+    auto splash = new SplashScreen();
+    if (splash && splash->init()) {
+        splash->autorelease();
+        return splash;
+    }
+    delete splash;
+    splash = nullptr;
+    return nullptr;
+}
+
+bool SplashScreen::init() {
+    if (!Layer::init()) { return false; }
+    
+    this->populateScene();
+    this->scheduleUpdate();
+    return true;
+}
+
+void SplashScreen::update(float dt) {
+    
+    mTimer += dt;
+    
+    if (mTimer >= WAIT_TIME) {
+        this->unscheduleUpdate();
+        Director::getInstance()->replaceScene(GameLayer::createScene());
+    }
+}
+
+void SplashScreen::populateScene() {
+    Size screenSize = Director::getInstance()->getWinSize();
+    auto label = Label::createWithSystemFont("Splash", "Arial", 60.0f);
+    label->setPosition(Vec2(screenSize.width * 0.5f, screenSize.height * 0.5f));
+    this->addChild(label);
+}

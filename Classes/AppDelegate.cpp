@@ -1,5 +1,5 @@
 #include "AppDelegate.h"
-#include "GameLayer.h"
+#include "SplashScreen.h"
 
 USING_NS_CC;
 
@@ -56,7 +56,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0 / 60);
 
     // Create the game scene
-    auto scene = GameLayer::createScene();
+    auto scene = SplashScreen::createScene();
 
     // Run the scene with the Director
     director->runWithScene(scene);

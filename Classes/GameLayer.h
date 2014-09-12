@@ -6,7 +6,6 @@
 
 class GameLayer : public cocos2d::Layer {
 private:
-    
     typedef enum {
         WaitingForTap,
         Starting,
