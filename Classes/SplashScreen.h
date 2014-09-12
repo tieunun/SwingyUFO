@@ -22,7 +22,6 @@ public:
     // overrides
     bool init() override;
     void update(float dt) override;
-    
 };
 
 #endif /* defined(__SwingyChute__SplashScreen__) */

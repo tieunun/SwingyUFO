@@ -3,8 +3,8 @@
 //  SwingyChute
 //
 
-#include "GameLayer.h"
 #include "SplashScreen.h"
+#include "MainMenuScreen.h"
 
 using namespace cocos2d;
 
@@ -46,7 +46,7 @@ void SplashScreen::update(float dt) {
     
     if (mTimer >= WAIT_TIME) {
         this->unscheduleUpdate();
-        Director::getInstance()->replaceScene(GameLayer::createScene());
+        Director::getInstance()->replaceScene(MainMenuScreen::createScene());
     }
 }
 
