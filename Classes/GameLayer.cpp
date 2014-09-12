@@ -8,6 +8,8 @@ using namespace cocos2d;
 #define START_DELAY 1.75f
 #define SPAWN_DELAY 2.5f
 #define GRAVITY_X 480.0f
+#define GRAVITY_Y 1800.0f
+#define TAG_PLATFORM 1
 
 GameLayer::GameLayer()
 : mGameState(WaitingForTap)
@@ -244,11 +246,25 @@ bool GameLayer::onTouchBegan(Touch *touch, Event *event) {
 
 bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
     CCLOG("Contact detected");
-    return true;
+    if (mGameState != GameOver) {
+        mGameState = GameOver;
+        mPhysWorld->setGravity(Vec2(0.0f, -GRAVITY_Y));
+        
+        this->stopAllActions();
+        
+        for (auto &child : this->getChildren()) {
+            if (child->getTag() == TAG_PLATFORM) {
+                child->stopAllActions();
+            }
+        }
+        return true;
+    }
+    return false;
 }
 
 void GameLayer::spawnPlatformPair() {
     auto platforms = PlatformPair::create();
+    platforms->setTag(TAG_PLATFORM);
     this->addChild(platforms);
     platforms->startMoving();
 }

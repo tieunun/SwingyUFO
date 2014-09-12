@@ -41,7 +41,7 @@ bool Player::init() {
     body->setCategoryBitmask(PhysicsGroup::PLAYER);
     body->setContactTestBitmask(PhysicsGroup::PLATFORM | PhysicsGroup::EDGE);
     body->setRotationEnable(false);
-    body->setVelocityLimit(PLAYER_MAX_VELOCITY);
+    //body->setVelocityLimit(PLAYER_MAX_VELOCITY);
     this->setPhysicsBody(body);
     this->setTextureRect(rect);
     this->setColor(Color3B::BLUE);
