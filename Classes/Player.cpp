@@ -36,9 +36,10 @@ bool Player::init() {
     
     auto body = PhysicsBody::createBox(rect.size);
     body->setGroup(PhysicsGroup::PLAYER);
-    body->setCollisionBitmask(0);
+    // Temporary collision bitmask to keep player on the screen until game over state is implemented
+    body->setCollisionBitmask(PhysicsGroup::EDGE);
     body->setCategoryBitmask(PhysicsGroup::PLAYER);
-    body->setContactTestBitmask(PhysicsGroup::PLATFORM);
+    body->setContactTestBitmask(PhysicsGroup::PLATFORM | PhysicsGroup::EDGE);
     body->setRotationEnable(false);
     body->setVelocityLimit(PLAYER_MAX_VELOCITY);
     this->setPhysicsBody(body);

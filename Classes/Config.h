@@ -8,7 +8,8 @@
 
 typedef enum {
     PLAYER = 1 << 0,
-    PLATFORM = 1 << 1
+    PLATFORM = 1 << 1,
+    EDGE = 1 << 2
 } PhysicsGroup;
 
 #endif

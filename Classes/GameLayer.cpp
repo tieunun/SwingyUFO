@@ -57,11 +57,24 @@ bool GameLayer::init() {
     
     mScreenSize = Director::getInstance()->getWinSize();
     
+    this->setupPhysics();
     this->populateScene();
     this->addEvents();
     this->scheduleUpdate();
     
     return true;
+}
+
+void GameLayer::setupPhysics() {
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    auto edges = PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
+    edges->setGroup(PhysicsGroup::EDGE);
+    edges->setCategoryBitmask(PhysicsGroup::EDGE);
+    edges->setContactTestBitmask(PhysicsGroup::PLAYER);
+    auto node = Node::create();
+    node->setPhysicsBody(edges);
+    node->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.5f));
+    this->addChild(node);
 }
 
 void GameLayer::populateScene() {
@@ -156,8 +169,6 @@ void GameLayer::addEvents() {
 }
 
 void GameLayer::update(float dt) {
-    
-    mPlayer->update(dt);
     
     switch (mGameState) {
             

@@ -31,6 +31,9 @@ private:
     
     cocos2d::PhysicsWorld *mPhysWorld;
     
+    void setupPhysics();
+    void addEvents();
+    void populateScene();
     void spawnPlatformPair();
     
 public:
@@ -46,8 +49,6 @@ public:
     bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event) override;
     
     // etc
-    void addEvents();
-    void populateScene();
     void setPhysicsWorld(cocos2d::PhysicsWorld *world) { mPhysWorld = world; }
     bool onContactBegin(cocos2d::PhysicsContact &contact);
 };
