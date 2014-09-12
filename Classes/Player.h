@@ -18,10 +18,6 @@ public:
     
 private:
     cocos2d::Size mScreenSize;
-    
-    cocos2d::Vec2 mVelocity;
-    cocos2d::Vec2 mAcceleration;
-    
     Direction mFacingDirection;
   
 public:
@@ -31,12 +27,12 @@ public:
     
     // overrides
     bool init() override;
-    void update(float dt) override;
 
     // etc
     void reset();
     void switchDirections();
     void setDirection(Direction dir) { mFacingDirection = dir; }
+    Direction getDirection() const { return mFacingDirection; }
 };
 
 #endif /* defined(__SwingyChute__Player__) */

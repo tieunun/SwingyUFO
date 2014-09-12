@@ -7,6 +7,7 @@ using namespace cocos2d;
 #define LABEL_MOVE_INTERVAL 0.55f
 #define START_DELAY 1.75f
 #define SPAWN_DELAY 2.5f
+#define GRAVITY_X 480.0f
 
 GameLayer::GameLayer()
 : mGameState(WaitingForTap)
@@ -170,7 +171,15 @@ void GameLayer::update(float dt) {
             } else {
                 mStartDelayTimer = 0.0f;
                 mGameState = Running;
-                mPlayer->setDirection((rand() % 2 == 0) ? Player::Direction::LEFT : Player::Direction::RIGHT);
+                
+                if (rand() % 2) {
+                    mPlayer->setDirection(Player::Direction::LEFT);
+                    mPhysWorld->setGravity(Vec2(-GRAVITY_X, 0.0f));
+                } else {
+                    mPlayer->setDirection(Player::Direction::RIGHT);
+                    mPhysWorld->setGravity(Vec2(GRAVITY_X, 0.0f));
+                }
+                
                 // Start spawning platforms
                 this->runAction(mSpawnPlatformsForever);
             }
@@ -200,6 +209,18 @@ bool GameLayer::onTouchBegan(Touch *touch, Event *event) {
             break;
             
         case Running:
+            switch (mPlayer->getDirection()) {
+                case Player::Direction::LEFT:
+                    mPhysWorld->setGravity(Vec2(GRAVITY_X, 0.0f));
+                    break;
+                
+                case Player::Direction::RIGHT:
+                    mPhysWorld->setGravity(Vec2(-GRAVITY_X, 0.0f));
+                    break;
+                    
+                default:
+                    break;
+            }
             mPlayer->switchDirections();
             break;
             

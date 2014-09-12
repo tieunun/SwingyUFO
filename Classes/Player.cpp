@@ -10,10 +10,11 @@ using namespace cocos2d;
 
 #define PLAYER_HEIGHT 64
 #define PLAYER_WIDTH 64
+#define PLAYER_MAX_VELOCITY 480.0f
+#define PLAYER_IMPULSE 480.0f
 
-Player::Player() : mVelocity(Vec2::ZERO), mFacingDirection(NEITHER) {
+Player::Player() : mFacingDirection(NEITHER) {
     mScreenSize = Director::getInstance()->getWinSize();
-    mAcceleration = Vec2(mScreenSize.width * 1.5f, 0.0f);
 }
 
 Player* Player::create() {
@@ -38,6 +39,8 @@ bool Player::init() {
     body->setCollisionBitmask(0);
     body->setCategoryBitmask(PhysicsGroup::PLAYER);
     body->setContactTestBitmask(PhysicsGroup::PLATFORM);
+    body->setRotationEnable(false);
+    body->setVelocityLimit(PLAYER_MAX_VELOCITY);
     this->setPhysicsBody(body);
     this->setTextureRect(rect);
     this->setColor(Color3B::BLUE);
@@ -46,39 +49,8 @@ bool Player::init() {
     return true;
 }
 
-void Player::update(float dt) {
-    
-    switch (mFacingDirection) {
-            
-        case LEFT:
-            mVelocity.x += -mAcceleration.x * dt;
-            break;
-            
-        case RIGHT:
-            mVelocity.x += mAcceleration.x * dt;
-            break;
-            
-        default:
-            break;
-    }
-    
-    // Velocity capping
-    if (mVelocity.x > 480.0f) { mVelocity.x = 480.0f; }
-    if (mVelocity.x < -480.0f) { mVelocity.x = -480.0f; }
-    
-    float posX = this->getPositionX() + (mVelocity.x * dt);
-    
-    // Boundary checks
-    float halfWidth = this->getContentSize().width * 0.5f;
-    if (posX > mScreenSize.width - halfWidth) { posX = mScreenSize.width - halfWidth; }
-    if (posX < halfWidth) { posX = halfWidth; }
-    
-    this->setPositionX(posX);
-}
-
 void Player::reset() {
     this->setPosition(Vec2(mScreenSize.width * 0.5f, mScreenSize.height * 0.8f));
-    mVelocity = Vec2::ZERO;
     mFacingDirection = NEITHER;
     this->getPhysicsBody()->resetForces();
 }
@@ -89,14 +61,16 @@ void Player::switchDirections() {
             
         case LEFT:
             CCLOG("Switching from LEFT to RIGHT");
+            this->getPhysicsBody()->setVelocity(Vec2::ZERO);
+            this->getPhysicsBody()->applyImpulse(Vec2(PLAYER_IMPULSE, 0));
             mFacingDirection = RIGHT;
-            mVelocity = Vec2::ZERO;
             break;
             
         case RIGHT:
             CCLOG("Switching from RIGHT to LEFT");
+            this->getPhysicsBody()->setVelocity(Vec2::ZERO);
+            this->getPhysicsBody()->applyImpulse(Vec2(-PLAYER_IMPULSE, 0));
             mFacingDirection = LEFT;
-            mVelocity = Vec2::ZERO;
             break;
             
         default:
