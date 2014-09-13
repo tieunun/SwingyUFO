@@ -11,6 +11,7 @@
 using namespace cocos2d;
 
 #define LABEL_MOVE_INTERVAL 0.55f
+#define SCORE_FADE_IN_INTERVAL 1.0f
 #define START_DELAY 1.75f
 #define SPAWN_DELAY 2.5f
 #define GRAVITY_X 480.0f
@@ -22,6 +23,7 @@ using namespace cocos2d;
 GameLayer::GameLayer()
 : mGameState(WaitingForTap)
 , mStartDelayTimer(0.0f)
+, mScore(0)
 {}
 
 GameLayer::~GameLayer() {
@@ -29,6 +31,7 @@ GameLayer::~GameLayer() {
     CC_SAFE_RELEASE_NULL(mGetReadyActionOut);
     CC_SAFE_RELEASE_NULL(mTapToStartActionIn);
     CC_SAFE_RELEASE_NULL(mTapToStartActionOut);
+    CC_SAFE_RELEASE_NULL(mScoreActionIn);
     CC_SAFE_RELEASE_NULL(mGameOverActionIn);
     CC_SAFE_RELEASE_NULL(mGameOverButtonsActionIn);
     CC_SAFE_RELEASE_NULL(mSpawnPlatformsForever);
@@ -143,13 +146,14 @@ void GameLayer::populateScene() {
     mTapToStartActionOut->retain();
     
     
-    // We will spawn a platform pair every few seconds and repeat this forever once the game starts
-    auto spawn = CallFunc::create(std::bind(&GameLayer::spawnPlatformPair, this));
-    auto delay = DelayTime::create(SPAWN_DELAY);
-    auto spawnThenWait = Sequence::create(spawn, delay, nullptr);
-    mSpawnPlatformsForever = RepeatForever::create(spawnThenWait);
-    mSpawnPlatformsForever->retain();
+    // Score label
+    mScoreLabel = Label::createWithSystemFont("0", "Arial", 50.0f);
+    mScoreLabel->setPosition(Vec2(mScreenSize.width * 0.5f, mScreenSize.height * 0.95f));
+    mScoreLabel->setOpacity(0.0f);
     
+    // Score will fade in
+    mScoreActionIn = FadeIn::create(SCORE_FADE_IN_INTERVAL);
+    mScoreActionIn->retain();
     
     // "Game Over" label
     mGameOverLabel = Label::createWithSystemFont("Game Over", "Arial", 50.0f);
@@ -182,8 +186,16 @@ void GameLayer::populateScene() {
     
     this->addChild(mGetReadyLabel);
     this->addChild(mTapToStartLabel);
+    this->addChild(mScoreLabel);
     this->addChild(mGameOverLabel);
     this->addChild(mGameOverButtons);
+    
+    // Spawn a platform pair every few seconds and repeat this forever once the game starts
+    auto spawn = CallFunc::create(std::bind(&GameLayer::spawnPlatformPair, this));
+    auto delay = DelayTime::create(SPAWN_DELAY);
+    auto spawnThenWait = Sequence::create(spawn, delay, nullptr);
+    mSpawnPlatformsForever = RepeatForever::create(spawnThenWait);
+    mSpawnPlatformsForever->retain();
     
     // Move the labels into the view of the user
     mGetReadyLabel->runAction(mGetReadyActionIn);
@@ -264,6 +276,7 @@ bool GameLayer::onTouchBegan(Touch *touch, Event *event) {
                 // Move the labels out of the way
                 mGetReadyLabel->runAction(mGetReadyActionOut);
                 mTapToStartLabel->runAction(mTapToStartActionOut);
+                mScoreLabel->runAction(mScoreActionIn);
                 mGameState = Starting;
             }
             break;
@@ -296,25 +309,40 @@ bool GameLayer::onTouchBegan(Touch *touch, Event *event) {
 
 bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
     CCLOG("Contact detected");
+    
     if (mGameState != GameOver) {
-        mGameState = GameOver;
-        mPhysWorld->setGravity(Vec2(0.0f, -GRAVITY_Y));   // Gravity becomes vertical when the player dies
+        auto shapeA = contact.getShapeA();
+        auto shapeB = contact.getShapeB();
         
-        // Stop spawning platforms
-        this->stopAllActions();
-        
-        // Stop all currently spawned platforms
-        for (auto &child : this->getChildren()) {
-            if (child->getTag() == TAG_PLATFORM) {
-                child->stopAllActions();
+        // If the player hits a "point zone"
+        if (shapeA->getCategoryBitmask() == PhysicsGroup::POINT_ZONE ||
+            shapeB->getCategoryBitmask() == PhysicsGroup::POINT_ZONE) {
+            
+            // Add 1 point to the score
+            std::stringstream ss;
+            ss << ++mScore;
+            mScoreLabel->setString(ss.str().c_str());
+            
+        } else {
+            mGameState = GameOver;
+            mPhysWorld->setGravity(Vec2(0.0f, -GRAVITY_Y));   // Gravity becomes vertical when the player dies
+            
+            // Stop spawning platforms
+            this->stopAllActions();
+            
+            // Stop all currently spawned platforms
+            for (auto &child : this->getChildren()) {
+                if (child->getTag() == TAG_PLATFORM) {
+                    child->stopAllActions();
+                }
             }
+            
+            mGameOverLabel->setVisible(true);
+            mGameOverLabel->runAction(mGameOverActionIn);
+            mGameOverButtons->setVisible(true);
+            mGameOverButtons->runAction(mGameOverButtonsActionIn);
+            mScoreLabel->setPosition(Vec2(mScreenSize.width * 0.5f, mScreenSize.height * 0.5f));
         }
-        
-        mGameOverLabel->setVisible(true);
-        mGameOverLabel->runAction(mGameOverActionIn);
-        mGameOverButtons->setVisible(true);
-        mGameOverButtons->runAction(mGameOverButtonsActionIn);
-        
         return true;
     }
     return false;   // When the game is over, the player will not collide with the edges anymore

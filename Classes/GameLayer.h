@@ -21,11 +21,13 @@ private:
     GameState mGameState;
     Player *mPlayer;
     float mStartDelayTimer;
+    unsigned mScore;
     
     cocos2d::Size mScreenSize;
     
     cocos2d::Label *mGetReadyLabel;
     cocos2d::Label *mTapToStartLabel;
+    cocos2d::Label *mScoreLabel;
     cocos2d::Label *mGameOverLabel;
     cocos2d::Menu *mGameOverButtons;
     
@@ -33,6 +35,7 @@ private:
     cocos2d::Action *mGetReadyActionOut;
     cocos2d::Action *mTapToStartActionIn;
     cocos2d::Action *mTapToStartActionOut;
+    cocos2d::Action *mScoreActionIn;
     cocos2d::Action *mGameOverActionIn;
     cocos2d::Action *mGameOverButtonsActionIn;
     cocos2d::Action *mSpawnPlatformsForever;
