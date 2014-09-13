@@ -242,7 +242,8 @@ void GameLayer::update(float dt) {
 }
 
 void GameLayer::restart() {
-    CCLOG("restart called");
+    auto newGameScene = GameLayer::createScene();
+    Director::getInstance()->replaceScene(newGameScene);
 }
 
 void GameLayer::goHome() {
