@@ -22,6 +22,7 @@ GameLayer::~GameLayer() {
     CC_SAFE_RELEASE_NULL(mTapToStartActionIn);
     CC_SAFE_RELEASE_NULL(mTapToStartActionOut);
     CC_SAFE_RELEASE_NULL(mGameOverActionIn);
+    CC_SAFE_RELEASE_NULL(mRestartActionIn);
     CC_SAFE_RELEASE_NULL(mSpawnPlatformsForever);
 }
 
@@ -87,7 +88,7 @@ void GameLayer::populateScene() {
     
     Vec2 beginPos, endPos;
     
-    // Prepare the "Get Ready" label and its actions
+    // "Get Ready" label
     mGetReadyLabel = Label::createWithSystemFont("Get Ready", "Arial", 50.0f);
     beginPos = Vec2(mScreenSize.width * 0.5f, mScreenSize.height + (mGetReadyLabel->getContentSize().height * 0.5f));
     endPos = Vec2(beginPos.x, mScreenSize.height * 0.7f);
@@ -111,7 +112,7 @@ void GameLayer::populateScene() {
     mGetReadyActionOut->retain();
     
     
-    // Prepare the "Tap to Start" label and its actions
+    // "Tap to Start" label
     mTapToStartLabel = Label::createWithSystemFont("Tap to start", "Arial", 50.0f);
     beginPos = Vec2(mTapToStartLabel->getContentSize().width * -0.5f, mScreenSize.height * 0.5f);
     endPos = Vec2(mScreenSize.width * 0.5f, beginPos.y);
@@ -143,7 +144,7 @@ void GameLayer::populateScene() {
     mSpawnPlatformsForever->retain();
     
     
-    // Prepare the "Game Over" label and its actions
+    // "Game Over" label
     mGameOverLabel = Label::createWithSystemFont("Game Over", "Arial", 50.0f);
     beginPos = Vec2(mScreenSize.width * 0.5f, mScreenSize.height + (mGameOverLabel->getContentSize().height * 0.5f));
     endPos = Vec2(beginPos.x, mScreenSize.height * 0.7f);
@@ -154,9 +155,22 @@ void GameLayer::populateScene() {
     mGameOverActionIn = EaseBounceOut::create(MoveTo::create(LABEL_MOVE_INTERVAL, endPos));
     mGameOverActionIn->retain();
     
+    
+    // "Restart" label
+    mRestartLabel = Label::createWithSystemFont("Restart", "Arial", 50.0f);
+    beginPos = Vec2(mScreenSize.width * 0.5f, mRestartLabel->getContentSize().height * -0.5f);
+    endPos = Vec2(beginPos.x, mScreenSize.height * 0.25f);
+    mRestartLabel->setPosition(beginPos);
+    mRestartLabel->setVisible(false);
+    
+    // The "Restart" label will move up from the bottom of the screen
+    mRestartActionIn = MoveTo::create(LABEL_MOVE_INTERVAL, endPos);
+    mRestartActionIn->retain();
+    
     this->addChild(mGetReadyLabel);
     this->addChild(mTapToStartLabel);
     this->addChild(mGameOverLabel);
+    this->addChild(mRestartLabel);
     
     // Move the labels into the view of the user
     mGetReadyLabel->runAction(mGetReadyActionIn);
@@ -276,6 +290,8 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
         
         mGameOverLabel->setVisible(true);
         mGameOverLabel->runAction(mGameOverActionIn);
+        mRestartLabel->setVisible(true);
+        mRestartLabel->runAction(mRestartActionIn);
         
         return true;
     }
