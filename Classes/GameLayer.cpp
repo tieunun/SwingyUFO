@@ -19,6 +19,7 @@ using namespace cocos2d;
 #define TAG_PLATFORM 1
 #define GAME_OVER_BUTTONS_PADDING 50.0f
 #define Z_ORDER_HUD 2
+#define KEY_HIGH_SCORE "hs"
 
 GameLayer::GameLayer()
 : mGameState(WaitingForTap)
@@ -155,6 +156,12 @@ void GameLayer::populateScene() {
     mScoreActionIn = FadeIn::create(SCORE_FADE_IN_INTERVAL);
     mScoreActionIn->retain();
     
+    
+    // High-score Label
+    mHighScoreLabel = Label::createWithSystemFont("0", "Arial", 50.0f);
+    mHighScoreLabel->setPosition(Vec2(mScreenSize.width * 0.5f, mScreenSize.height * 0.4f));
+    mHighScoreLabel->setVisible(false);
+    
     // "Game Over" label
     mGameOverLabel = Label::createWithSystemFont("Game Over", "Arial", 50.0f);
     beginPos = Vec2(mScreenSize.width * 0.5f, mScreenSize.height + (mGameOverLabel->getContentSize().height * 0.5f));
@@ -187,6 +194,7 @@ void GameLayer::populateScene() {
     this->addChild(mGetReadyLabel);
     this->addChild(mTapToStartLabel);
     this->addChild(mScoreLabel);
+    this->addChild(mHighScoreLabel);
     this->addChild(mGameOverLabel);
     this->addChild(mGameOverButtons);
     
@@ -342,6 +350,23 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
             mGameOverButtons->setVisible(true);
             mGameOverButtons->runAction(mGameOverButtonsActionIn);
             mScoreLabel->setPosition(Vec2(mScreenSize.width * 0.5f, mScreenSize.height * 0.5f));
+            mScoreLabel->setString("Score: " + mScoreLabel->getString());
+            
+            auto userDefault = UserDefault::getInstance();
+            int highScore = userDefault->getIntegerForKey(KEY_HIGH_SCORE);
+            
+            if (mScore > highScore) {
+                highScore = mScore;
+                userDefault->setIntegerForKey(KEY_HIGH_SCORE, highScore);
+                userDefault->flush();
+            }
+            
+            std::stringstream ss;
+            ss << "High score: " <<  highScore;
+            mHighScoreLabel->setString(ss.str().c_str());
+            mHighScoreLabel->setVisible(true);
+            
+            
         }
         return true;
     }

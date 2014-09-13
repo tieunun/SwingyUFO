@@ -21,13 +21,14 @@ private:
     GameState mGameState;
     Player *mPlayer;
     float mStartDelayTimer;
-    unsigned mScore;
+    int mScore;
     
     cocos2d::Size mScreenSize;
     
     cocos2d::Label *mGetReadyLabel;
     cocos2d::Label *mTapToStartLabel;
     cocos2d::Label *mScoreLabel;
+    cocos2d::Label *mHighScoreLabel;
     cocos2d::Label *mGameOverLabel;
     cocos2d::Menu *mGameOverButtons;
     
