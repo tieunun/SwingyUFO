@@ -54,6 +54,8 @@ bool PlatformPair::init() {
     // We must add the platform width to account for anchor points
     startPos.x += GAP_DISTANCE + PLATFORM_WIDTH;
     addPlatform(startPos);
+    startPos.x -= (GAP_DISTANCE + PLATFORM_WIDTH) * 0.5f;
+    addPointZone(startPos);
     
     return true;
 }
@@ -71,6 +73,18 @@ void PlatformPair::addPlatform(Vec2 pos) {
     plat->setColor(Color3B(0, 255, 0));
     plat->setPosition(pos);
     this->addChild(plat);
+}
+
+void PlatformPair::addPointZone(Vec2 pos) {
+    auto zone = Node::create();
+    auto body = PhysicsBody::createBox(Size(GAP_DISTANCE * 0.9f, PLATFORM_HEIGHT * 0.5f));
+    body->setDynamic(false);
+    body->setCollisionBitmask(0);
+    body->setCategoryBitmask(PhysicsGroup::POINT_ZONE);
+    body->setContactTestBitmask(PhysicsGroup::PLAYER);
+    zone->setPhysicsBody(body);
+    zone->setPosition(pos);
+    this->addChild(zone);
 }
 
 void PlatformPair::startMoving() {

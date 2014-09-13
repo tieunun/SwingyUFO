@@ -13,6 +13,7 @@ private:
     cocos2d::Size mScreenSize;
     
     void addPlatform(cocos2d::Vec2 pos);
+    void addPointZone(cocos2d::Vec2 pos);
     
 public:
     static PlatformPair* create();
