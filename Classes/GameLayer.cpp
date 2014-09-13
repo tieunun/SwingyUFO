@@ -21,6 +21,7 @@ GameLayer::~GameLayer() {
     CC_SAFE_RELEASE_NULL(mGetReadyActionOut);
     CC_SAFE_RELEASE_NULL(mTapToStartActionIn);
     CC_SAFE_RELEASE_NULL(mTapToStartActionOut);
+    CC_SAFE_RELEASE_NULL(mGameOverActionIn);
     CC_SAFE_RELEASE_NULL(mSpawnPlatformsForever);
 }
 
@@ -141,8 +142,21 @@ void GameLayer::populateScene() {
     mSpawnPlatformsForever = RepeatForever::create(spawnThenWait);
     mSpawnPlatformsForever->retain();
     
+    
+    // Prepare the "Game Over" label and its actions
+    mGameOverLabel = Label::createWithSystemFont("Game Over", "Arial", 50.0f);
+    beginPos = Vec2(mScreenSize.width * 0.5f, mScreenSize.height + (mGameOverLabel->getContentSize().height * 0.5f));
+    endPos = Vec2(beginPos.x, mScreenSize.height * 0.7f);
+    mGameOverLabel->setPosition(beginPos);
+    mGameOverLabel->setVisible(false);
+    
+    // Like the "Get Ready" label, the game over label will move down from the top of the screen
+    mGameOverActionIn = EaseBounceOut::create(MoveTo::create(LABEL_MOVE_INTERVAL, endPos));
+    mGameOverActionIn->retain();
+    
     this->addChild(mGetReadyLabel);
     this->addChild(mTapToStartLabel);
+    this->addChild(mGameOverLabel);
     
     // Move the labels into the view of the user
     mGetReadyLabel->runAction(mGetReadyActionIn);
@@ -248,18 +262,24 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
     CCLOG("Contact detected");
     if (mGameState != GameOver) {
         mGameState = GameOver;
-        mPhysWorld->setGravity(Vec2(0.0f, -GRAVITY_Y));
+        mPhysWorld->setGravity(Vec2(0.0f, -GRAVITY_Y));   // Gravity becomes vertical when the player dies
         
+        // Stop spawning platforms
         this->stopAllActions();
         
+        // Stop all currently spawned platforms
         for (auto &child : this->getChildren()) {
             if (child->getTag() == TAG_PLATFORM) {
                 child->stopAllActions();
             }
         }
+        
+        mGameOverLabel->setVisible(true);
+        mGameOverLabel->runAction(mGameOverActionIn);
+        
         return true;
     }
-    return false;
+    return false;   // When the game is over, the player will not collide with the edges anymore
 }
 
 void GameLayer::spawnPlatformPair() {
