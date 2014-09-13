@@ -2,9 +2,6 @@
 //  MainMenuScreen.h
 //  SwingyChute
 //
-//  Created by Casey Caldwell on 9/12/14.
-//
-//
 
 #ifndef __SwingyChute__MainMenuScreen__
 #define __SwingyChute__MainMenuScreen__

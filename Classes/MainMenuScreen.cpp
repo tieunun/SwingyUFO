@@ -2,9 +2,6 @@
 //  MainMenuScreen.cpp
 //  SwingyChute
 //
-//  Created by Casey Caldwell on 9/12/14.
-//
-//
 
 #include "MainMenuScreen.h"
 #include "GameLayer.h"

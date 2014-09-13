@@ -1,3 +1,8 @@
+//
+//  GameLayer.h
+//  SwingyChute
+//
+
 #ifndef __GAMELAYER_H__
 #define __GAMELAYER_H__
 
