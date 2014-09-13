@@ -1,4 +1,5 @@
 #include "GameLayer.h"
+#include "MainMenuScreen.h"
 #include "PlatformPair.h"
 #include "Config.h"
 
@@ -245,7 +246,8 @@ void GameLayer::restart() {
 }
 
 void GameLayer::goHome() {
-    CCLOG("goHome called");
+    auto homeScene = MainMenuScreen::createScene();
+    Director::getInstance()->replaceScene(homeScene);
 }
 
 bool GameLayer::onTouchBegan(Touch *touch, Event *event) {
