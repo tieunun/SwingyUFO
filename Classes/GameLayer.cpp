@@ -10,6 +10,8 @@ using namespace cocos2d;
 #define GRAVITY_X 480.0f
 #define GRAVITY_Y 1800.0f
 #define TAG_PLATFORM 1
+#define GAME_OVER_BUTTONS_PADDING 50.0f
+#define Z_ORDER_HUD 2
 
 GameLayer::GameLayer()
 : mGameState(WaitingForTap)
@@ -22,7 +24,7 @@ GameLayer::~GameLayer() {
     CC_SAFE_RELEASE_NULL(mTapToStartActionIn);
     CC_SAFE_RELEASE_NULL(mTapToStartActionOut);
     CC_SAFE_RELEASE_NULL(mGameOverActionIn);
-    CC_SAFE_RELEASE_NULL(mRestartActionIn);
+    CC_SAFE_RELEASE_NULL(mGameOverButtonsActionIn);
     CC_SAFE_RELEASE_NULL(mSpawnPlatformsForever);
 }
 
@@ -56,7 +58,6 @@ GameLayer* GameLayer::create() {
 }
 
 bool GameLayer::init() {
-    
     if (!Layer::init()) { return false; }
     
     mScreenSize = Director::getInstance()->getWinSize();
@@ -156,21 +157,27 @@ void GameLayer::populateScene() {
     mGameOverActionIn->retain();
     
     
-    // "Restart" label
-    mRestartLabel = Label::createWithSystemFont("Restart", "Arial", 50.0f);
-    beginPos = Vec2(mScreenSize.width * 0.5f, mRestartLabel->getContentSize().height * -0.5f);
-    endPos = Vec2(beginPos.x, mScreenSize.height * 0.25f);
-    mRestartLabel->setPosition(beginPos);
-    mRestartLabel->setVisible(false);
+    // Game over buttons (restart, home, etc)
+    auto restartLabel = Label::createWithSystemFont("Restart", "Arial", 50.0f);
+    auto restartMenuItem = MenuItemLabel::create(restartLabel, std::bind(&GameLayer::restart, this));
+    auto homeLabel = Label::createWithSystemFont("Home", "Arial", 50.0f);
+    auto homeMenuItem = MenuItemLabel::create(homeLabel, std::bind(&GameLayer::goHome, this));
     
-    // The "Restart" label will move up from the bottom of the screen
-    mRestartActionIn = MoveTo::create(LABEL_MOVE_INTERVAL, endPos);
-    mRestartActionIn->retain();
+    mGameOverButtons = Menu::create(restartMenuItem, homeMenuItem, nullptr);
+    beginPos = Vec2(mScreenSize.width * 0.5f, restartLabel->getContentSize().height * -0.5f);
+    endPos = Vec2(beginPos.x, mScreenSize.height * 0.25f);
+    mGameOverButtons->setPosition(beginPos);
+    mGameOverButtons->alignItemsHorizontallyWithPadding(GAME_OVER_BUTTONS_PADDING);
+    mGameOverButtons->setLocalZOrder(Z_ORDER_HUD);
+    
+    // The game over buttons will move up from the bottom of the screen
+    mGameOverButtonsActionIn = MoveTo::create(LABEL_MOVE_INTERVAL, endPos);
+    mGameOverButtonsActionIn->retain();
     
     this->addChild(mGetReadyLabel);
     this->addChild(mTapToStartLabel);
     this->addChild(mGameOverLabel);
-    this->addChild(mRestartLabel);
+    this->addChild(mGameOverButtons);
     
     // Move the labels into the view of the user
     mGetReadyLabel->runAction(mGetReadyActionIn);
@@ -220,7 +227,6 @@ void GameLayer::update(float dt) {
                     mPlayer->setDirection(Player::Direction::RIGHT);
                     mPhysWorld->setGravity(Vec2(GRAVITY_X, 0.0f));
                 }
-                
                 // Start spawning platforms
                 this->runAction(mSpawnPlatformsForever);
             }
@@ -232,6 +238,14 @@ void GameLayer::update(float dt) {
         case GameOver:
             break;
     }
+}
+
+void GameLayer::restart() {
+    CCLOG("restart called");
+}
+
+void GameLayer::goHome() {
+    CCLOG("goHome called");
 }
 
 bool GameLayer::onTouchBegan(Touch *touch, Event *event) {
@@ -290,8 +304,8 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
         
         mGameOverLabel->setVisible(true);
         mGameOverLabel->runAction(mGameOverActionIn);
-        mRestartLabel->setVisible(true);
-        mRestartLabel->runAction(mRestartActionIn);
+        mGameOverButtons->setVisible(true);
+        mGameOverButtons->runAction(mGameOverButtonsActionIn);
         
         return true;
     }

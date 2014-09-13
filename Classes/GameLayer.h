@@ -22,14 +22,14 @@ private:
     cocos2d::Label *mGetReadyLabel;
     cocos2d::Label *mTapToStartLabel;
     cocos2d::Label *mGameOverLabel;
-    cocos2d::Label *mRestartLabel;
+    cocos2d::Menu *mGameOverButtons;
     
     cocos2d::Action *mGetReadyActionIn;
     cocos2d::Action *mGetReadyActionOut;
     cocos2d::Action *mTapToStartActionIn;
     cocos2d::Action *mTapToStartActionOut;
     cocos2d::Action *mGameOverActionIn;
-    cocos2d::Action *mRestartActionIn;
+    cocos2d::Action *mGameOverButtonsActionIn;
     cocos2d::Action *mSpawnPlatformsForever;
     
     cocos2d::PhysicsWorld *mPhysWorld;
@@ -38,6 +38,8 @@ private:
     void addEvents();
     void populateScene();
     void spawnPlatformPair();
+    void restart();
+    void goHome();
     
 public:
     GameLayer();
