@@ -12,8 +12,10 @@ using namespace cocos2d;
 #define WIDTH_16_9 450.0f
 #define PLATFORM_HEIGHT 32.0f
 #define PLATFORM_WIDTH (600.0f - GAP_DISTANCE)
-#define SWING_HEIGHT 200.0f
-#define SWING_WIDTH 16.0f
+#define SWING_HANDLE_HEIGHT 100.0f
+#define SWING_HANDLE_WIDTH 16.0f
+#define SWING_HEAD_HEIGHT 45.0f
+#define SWING_HEAD_WIDTH 62.0f
 #define PLATFORM_TRAVEL_TIME 5.0f
 
 PlatformPair* PlatformPair::create() {
@@ -66,13 +68,12 @@ void PlatformPair::addPlatform(Vec2 pos, bool isLeft) {
     auto swing = createSwing();
     
     if (isLeft)
-        pos.x += PLATFORM_WIDTH * 0.25f;
+        pos.x += PLATFORM_WIDTH * 0.45f;
     else
-        pos.x -= PLATFORM_WIDTH * 0.25f;
-    
-    pos.y += SWING_HEIGHT * 0.5f;
+        pos.x -= PLATFORM_WIDTH * 0.45f;
     
     swing->setPosition(pos);
+    swing->runAction(RepeatForever::create(RotateBy::create(2.0f, 360.0f)));
     this->addChild(swing);
             
 }
@@ -96,10 +97,15 @@ Sprite* PlatformPair::createPlatform() {
 }
 
 Sprite* PlatformPair::createSwing() {
-    auto swingBody = createObstacleSprite(SWING_WIDTH, SWING_HEIGHT);
-    auto swingHead = createObstacleSprite(100.0f, 64.0f);
-    swingHead->setPosition(swingBody->getPositionX() + SWING_WIDTH * 0.5f, SWING_HEIGHT);
+    auto swingBody = Sprite::create();
+    swingBody->setTextureRect(Rect(0, 0, SWING_HANDLE_WIDTH, SWING_HANDLE_HEIGHT));
+    swingBody->setColor(Color3B(0.0f, 255.0f, 0.0f));
+    swingBody->setAnchorPoint(Vec2(0.5f, 0.0f));
+    auto swingHead = createObstacleSprite(SWING_HEAD_WIDTH, SWING_HEAD_HEIGHT);
+    swingHead->setPosition(swingBody->getPositionX() + SWING_HANDLE_WIDTH * 0.5f, SWING_HANDLE_HEIGHT);
     swingBody->addChild(swingHead);
+    swingBody->setRotation(45.0f);
+    
     return swingBody;
 }
 
