@@ -10,8 +10,10 @@ using namespace cocos2d;
 
 #define GAP_DISTANCE 285.0f
 #define WIDTH_16_9 450.0f
-#define PLATFORM_HEIGHT 32
+#define PLATFORM_HEIGHT 32.0f
 #define PLATFORM_WIDTH (600.0f - GAP_DISTANCE)
+#define SWING_HEIGHT 200.0f
+#define SWING_WIDTH 16.0f
 #define PLATFORM_TRAVEL_TIME 5.0f
 
 PlatformPair* PlatformPair::create() {
@@ -43,36 +45,62 @@ bool PlatformPair::init() {
     minStartX = halfDiff - halfWidth;
     maxStartX = mScreenSize.width - halfDiff - GAP_DISTANCE - halfWidth;
     
-    //    CCLOG("minStartX = %f", minStartX);
-    //    CCLOG("maxStartX = %f", maxStartX);
-    
     // Random number between minStartX and maxStartX
     startPos.x = (rand() % int(maxStartX - minStartX + 1)) + minStartX;
     startPos.y = -0.5f * PLATFORM_HEIGHT;
     
-    addPlatform(startPos);
+    addPlatform(startPos, true);
     // We must add the platform width to account for anchor points
     startPos.x += GAP_DISTANCE + PLATFORM_WIDTH;
-    addPlatform(startPos);
+    addPlatform(startPos, false);
     startPos.x -= (GAP_DISTANCE + PLATFORM_WIDTH) * 0.5f;
     addPointZone(startPos);
     
     return true;
 }
 
-void PlatformPair::addPlatform(Vec2 pos) {
-    auto plat = Sprite::create();
-    Rect rect = Rect(0, 0, PLATFORM_WIDTH, PLATFORM_HEIGHT);
+void PlatformPair::addPlatform(Vec2 pos, bool isLeft) {
+    auto plat = createPlatform();
+    plat->setPosition(pos);
+    this->addChild(plat);
+    auto swing = createSwing();
+    
+    if (isLeft)
+        pos.x += PLATFORM_WIDTH * 0.25f;
+    else
+        pos.x -= PLATFORM_WIDTH * 0.25f;
+    
+    pos.y += SWING_HEIGHT * 0.5f;
+    
+    swing->setPosition(pos);
+    this->addChild(swing);
+            
+}
+
+Sprite* PlatformPair::createObstacleSprite(float width, float height, Color3B color) {
+    auto obstacle = Sprite::create();
+    Rect rect = Rect(0, 0, width, height);
     auto body = PhysicsBody::createBox(rect.size);
-    body->setDynamic(false);    // Platforms are not affected by gravity
+    body->setDynamic(false);      // Platforms are not affected by gravity
     body->setCollisionBitmask(0);
     body->setCategoryBitmask(PhysicsGroup::PLATFORM);
     body->setContactTestBitmask(PhysicsGroup::PLAYER);
-    plat->setPhysicsBody(body);
-    plat->setTextureRect(rect);
-    plat->setColor(Color3B(0, 255, 0));
-    plat->setPosition(pos);
-    this->addChild(plat);
+    obstacle->setPhysicsBody(body);
+    obstacle->setTextureRect(rect);
+    obstacle->setColor(color);
+    return obstacle;
+}
+
+Sprite* PlatformPair::createPlatform() {
+    return createObstacleSprite(PLATFORM_WIDTH, PLATFORM_HEIGHT);
+}
+
+Sprite* PlatformPair::createSwing() {
+    auto swingBody = createObstacleSprite(SWING_WIDTH, SWING_HEIGHT);
+    auto swingHead = createObstacleSprite(100.0f, 64.0f);
+    swingHead->setPosition(swingBody->getPositionX() + SWING_WIDTH * 0.5f, SWING_HEIGHT);
+    swingBody->addChild(swingHead);
+    return swingBody;
 }
 
 void PlatformPair::addPointZone(Vec2 pos) {
