@@ -105,6 +105,7 @@ void GameLayer::populateScene() {
     beginPos = Vec2(mScreenSize.width * 0.5f, mScreenSize.height + (mGetReadyLabel->getContentSize().height * 0.5f));
     endPos = Vec2(beginPos.x, mScreenSize.height * 0.7f);
     mGetReadyLabel->setPosition(beginPos);
+    mGetReadyLabel->setZOrder(Z_ORDER_HUD);
     
     // The "Get Ready" label will move downwards from beginPos to endPos
     mGetReadyActionIn = MoveTo::create(LABEL_MOVE_INTERVAL, endPos);
@@ -129,6 +130,7 @@ void GameLayer::populateScene() {
     beginPos = Vec2(mTapToStartLabel->getContentSize().width * -0.5f, mScreenSize.height * 0.5f);
     endPos = Vec2(mScreenSize.width * 0.5f, beginPos.y);
     mTapToStartLabel->setPosition(beginPos);
+    mTapToStartLabel->setZOrder(Z_ORDER_HUD);
     
     // The "Tap to Start" label will move left to right from beginPos to endPos
     mTapToStartActionIn = MoveTo::create(LABEL_MOVE_INTERVAL, endPos);
@@ -152,6 +154,7 @@ void GameLayer::populateScene() {
     mScoreLabel = Label::createWithSystemFont("0", "Arial", 50.0f);
     mScoreLabel->setPosition(Vec2(mScreenSize.width * 0.5f, mScreenSize.height * 0.10f));
     mScoreLabel->setOpacity(0.0f);
+    mScoreLabel->setZOrder(Z_ORDER_HUD);
     
     // Score will fade in
     mScoreActionIn = FadeIn::create(SCORE_FADE_IN_INTERVAL);
@@ -162,6 +165,7 @@ void GameLayer::populateScene() {
     mHighScoreLabel = Label::createWithSystemFont("0", "Arial", 50.0f);
     mHighScoreLabel->setPosition(Vec2(mScreenSize.width * 0.5f, mScreenSize.height * 0.4f));
     mHighScoreLabel->setVisible(false);
+    mHighScoreLabel->setZOrder(Z_ORDER_HUD);
     
     // "Game Over" label
     mGameOverLabel = Label::createWithSystemFont("Game Over", "Arial", 50.0f);
@@ -169,6 +173,7 @@ void GameLayer::populateScene() {
     endPos = Vec2(beginPos.x, mScreenSize.height * 0.7f);
     mGameOverLabel->setPosition(beginPos);
     mGameOverLabel->setVisible(false);
+    mGameOverLabel->setZOrder(Z_ORDER_HUD);
     
     // Like the "Get Ready" label, the game over label will move down from the top of the screen
     mGameOverActionIn = EaseBounceOut::create(MoveTo::create(LABEL_MOVE_INTERVAL, endPos));
@@ -186,7 +191,7 @@ void GameLayer::populateScene() {
     endPos = Vec2(beginPos.x, mScreenSize.height * 0.25f);
     mGameOverButtons->setPosition(beginPos);
     mGameOverButtons->alignItemsHorizontallyWithPadding(GAME_OVER_BUTTONS_PADDING);
-    mGameOverButtons->setLocalZOrder(Z_ORDER_HUD);
+    mGameOverButtons->setZOrder(Z_ORDER_HUD);
     
     // The game over buttons will move up from the bottom of the screen
     mGameOverButtonsActionIn = MoveTo::create(LABEL_MOVE_INTERVAL, endPos);
