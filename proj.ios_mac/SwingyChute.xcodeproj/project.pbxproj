@@ -59,6 +59,8 @@
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
+		C913166E19D6939000A13EFD /* 04B_19__.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C913166D19D6939000A13EFD /* 04B_19__.ttf */; };
+		C913166F19D6939000A13EFD /* 04B_19__.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C913166D19D6939000A13EFD /* 04B_19__.ttf */; };
 		C93701D319CE4869002FD894 /* sprite_sheet.plist in Resources */ = {isa = PBXBuildFile; fileRef = C93701D119CE4869002FD894 /* sprite_sheet.plist */; };
 		C93701D419CE4869002FD894 /* sprite_sheet.plist in Resources */ = {isa = PBXBuildFile; fileRef = C93701D119CE4869002FD894 /* sprite_sheet.plist */; };
 		C93701D519CE4869002FD894 /* sprite_sheet.png in Resources */ = {isa = PBXBuildFile; fileRef = C93701D219CE4869002FD894 /* sprite_sheet.png */; };
@@ -265,6 +267,7 @@
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C913166D19D6939000A13EFD /* 04B_19__.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = 04B_19__.ttf; sourceTree = "<group>"; };
 		C926C95619C2A59400C57954 /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Config.h; path = ../Classes/Config.h; sourceTree = "<group>"; };
 		C93701D119CE4869002FD894 /* sprite_sheet.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = sprite_sheet.plist; sourceTree = "<group>"; };
 		C93701D219CE4869002FD894 /* sprite_sheet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sprite_sheet.png; sourceTree = "<group>"; };
@@ -477,6 +480,7 @@
 		78C7DDAA14EBA5050085D0C2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C913166D19D6939000A13EFD /* 04B_19__.ttf */,
 				C93701D119CE4869002FD894 /* sprite_sheet.plist */,
 				C93701D219CE4869002FD894 /* sprite_sheet.png */,
 			);
@@ -659,6 +663,7 @@
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
 				5087E78017EB970100C73F5D /* Icon-114.png in Resources */,
 				50EF62A217ECD613001EB2F8 /* Icon-29.png in Resources */,
+				C913166E19D6939000A13EFD /* 04B_19__.ttf in Resources */,
 				50EF629617ECD46A001EB2F8 /* Icon-40.png in Resources */,
 				5087E78217EB970100C73F5D /* Icon-144.png in Resources */,
 				50EF629817ECD46A001EB2F8 /* Icon-80.png in Resources */,
@@ -674,6 +679,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
+				C913166F19D6939000A13EFD /* 04B_19__.ttf in Resources */,
 				C93701D419CE4869002FD894 /* sprite_sheet.plist in Resources */,
 				C93701D619CE4869002FD894 /* sprite_sheet.png in Resources */,
 			);

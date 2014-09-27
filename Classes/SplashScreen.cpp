@@ -6,6 +6,8 @@
 #include "SplashScreen.h"
 #include "MainMenuScreen.h"
 
+#define FONT_04 "04B_19__.ttf"
+
 using namespace cocos2d;
 
 #define WAIT_TIME 2.0f
@@ -58,7 +60,7 @@ void SplashScreen::update(float dt) {
 
 void SplashScreen::populateScene() {
     Size screenSize = Director::getInstance()->getWinSize();
-    auto label = Label::createWithSystemFont("Splash", "Arial", 60.0f);
+    auto label = Label::createWithTTF("Splash", FONT_04, 60.0f);
     label->setPosition(Vec2(screenSize.width * 0.5f, screenSize.height * 0.5f));
     this->addChild(label);
 }

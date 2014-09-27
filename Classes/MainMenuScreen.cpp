@@ -6,6 +6,8 @@
 #include "MainMenuScreen.h"
 #include "GameLayer.h"
 
+#define FONT_04 "04B_19__.ttf"
+
 using namespace cocos2d;
 
 Scene* MainMenuScreen::createScene() {
@@ -38,7 +40,7 @@ void MainMenuScreen::populateScene() {
     Size screenSize = Director::getInstance()->getWinSize();
     
     // Game title
-    Label *label = Label::createWithSystemFont("Swingy Chute", "Arial", 60.0f);
+    Label *label = Label::createWithTTF("Swingy Chute", FONT_04, 60.0f);
     label->setPosition(Vec2(screenSize.width * 0.5f, screenSize.height * 0.8f));
     this->addChild(label);
     
@@ -47,7 +49,7 @@ void MainMenuScreen::populateScene() {
         auto gameScene = GameLayer::createScene();
         Director::getInstance()->replaceScene(gameScene);
     };
-    label = Label::createWithSystemFont("Play", "Arial", 50.0f);
+    label = Label::createWithTTF("Play", FONT_04, 50.0f);
     auto playButton = MenuItemLabel::create(label, startGame);
     auto menu = Menu::create(playButton, nullptr);
     menu->alignItemsHorizontally();

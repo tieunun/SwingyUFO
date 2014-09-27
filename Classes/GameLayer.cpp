@@ -21,6 +21,7 @@ using namespace cocos2d;
 #define GAME_OVER_BUTTONS_PADDING 50.0f
 #define Z_ORDER_HUD 2
 #define KEY_HIGH_SCORE "hs"
+#define FONT_04 "04B_19__.ttf"
 
 GameLayer::GameLayer()
 : mGameState(WaitingForTap)
@@ -101,7 +102,7 @@ void GameLayer::populateScene() {
     Vec2 beginPos, endPos;
     
     // "Get Ready" label
-    mGetReadyLabel = Label::createWithSystemFont("Get Ready", "Arial", 50.0f);
+    mGetReadyLabel = Label::createWithTTF("Get Ready", FONT_04, 50.0f);
     beginPos = Vec2(mScreenSize.width * 0.5f, mScreenSize.height + (mGetReadyLabel->getContentSize().height * 0.5f));
     endPos = Vec2(beginPos.x, mScreenSize.height * 0.7f);
     mGetReadyLabel->setPosition(beginPos);
@@ -126,7 +127,7 @@ void GameLayer::populateScene() {
     
     
     // "Tap to Start" label
-    mTapToStartLabel = Label::createWithSystemFont("Tap to start", "Arial", 50.0f);
+    mTapToStartLabel = Label::createWithTTF("Tap to start", FONT_04, 50.0f);
     beginPos = Vec2(mTapToStartLabel->getContentSize().width * -0.5f, mScreenSize.height * 0.5f);
     endPos = Vec2(mScreenSize.width * 0.5f, beginPos.y);
     mTapToStartLabel->setPosition(beginPos);
@@ -151,7 +152,7 @@ void GameLayer::populateScene() {
     
     
     // Score label
-    mScoreLabel = Label::createWithSystemFont("0", "Arial", 50.0f);
+    mScoreLabel = Label::createWithTTF("0", FONT_04, 50.0f);
     mScoreLabel->setPosition(Vec2(mScreenSize.width * 0.5f, mScreenSize.height * 0.10f));
     mScoreLabel->setOpacity(0.0f);
     mScoreLabel->setZOrder(Z_ORDER_HUD);
@@ -162,13 +163,13 @@ void GameLayer::populateScene() {
     
     
     // High-score Label
-    mHighScoreLabel = Label::createWithSystemFont("0", "Arial", 50.0f);
+    mHighScoreLabel = Label::createWithTTF("0", FONT_04, 50.0f);
     mHighScoreLabel->setPosition(Vec2(mScreenSize.width * 0.5f, mScreenSize.height * 0.4f));
     mHighScoreLabel->setVisible(false);
     mHighScoreLabel->setZOrder(Z_ORDER_HUD);
     
     // "Game Over" label
-    mGameOverLabel = Label::createWithSystemFont("Game Over", "Arial", 50.0f);
+    mGameOverLabel = Label::createWithTTF("Game Over", FONT_04, 50.0f);
     beginPos = Vec2(mScreenSize.width * 0.5f, mScreenSize.height + (mGameOverLabel->getContentSize().height * 0.5f));
     endPos = Vec2(beginPos.x, mScreenSize.height * 0.7f);
     mGameOverLabel->setPosition(beginPos);
@@ -181,9 +182,9 @@ void GameLayer::populateScene() {
     
     
     // Game over buttons (restart, home, etc)
-    auto restartLabel = Label::createWithSystemFont("Restart", "Arial", 50.0f);
+    auto restartLabel = Label::createWithTTF("Restart", FONT_04, 50.0f);
     auto restartMenuItem = MenuItemLabel::create(restartLabel, std::bind(&GameLayer::restart, this));
-    auto homeLabel = Label::createWithSystemFont("Home", "Arial", 50.0f);
+    auto homeLabel = Label::createWithTTF("Home", FONT_04, 50.0f);
     auto homeMenuItem = MenuItemLabel::create(homeLabel, std::bind(&GameLayer::goHome, this));
     
     mGameOverButtons = Menu::create(restartMenuItem, homeMenuItem, nullptr);
