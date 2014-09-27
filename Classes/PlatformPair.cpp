@@ -8,14 +8,10 @@
 
 using namespace cocos2d;
 
-#define GAP_DISTANCE 285.0f
+#define GAP_DISTANCE 350.0f
 #define WIDTH_16_9 450.0f
 #define PLATFORM_HEIGHT 32.0f
 #define PLATFORM_WIDTH (600.0f - GAP_DISTANCE)
-#define SWING_HANDLE_HEIGHT 100.0f
-#define SWING_HANDLE_WIDTH 16.0f
-#define SWING_HEAD_HEIGHT 45.0f
-#define SWING_HEAD_WIDTH 62.0f
 #define PLATFORM_TRAVEL_TIME 5.0f
 
 PlatformPair* PlatformPair::create() {
@@ -51,58 +47,61 @@ bool PlatformPair::init() {
     startPos.x = (rand() % int(maxStartX - minStartX + 1)) + minStartX;
     startPos.y = -0.5f * PLATFORM_HEIGHT;
     
-    addPlatform(startPos, true);
+    auto plat = addPlatform(startPos, true);
     // We must add the platform width to account for anchor points
-    startPos.x += GAP_DISTANCE + PLATFORM_WIDTH;
+    startPos.x += GAP_DISTANCE + plat->getBoundingBox().size.width;
     addPlatform(startPos, false);
-    startPos.x -= (GAP_DISTANCE + PLATFORM_WIDTH) * 0.5f;
+    startPos.x -= (GAP_DISTANCE + plat->getBoundingBox().size.width) * 0.5f;
     addPointZone(startPos);
     
     return true;
 }
 
-void PlatformPair::addPlatform(Vec2 pos, bool isLeft) {
+Sprite* PlatformPair::addPlatform(Vec2 pos, bool isLeft) {
     auto plat = createPlatform();
     plat->setPosition(pos);
     this->addChild(plat);
     auto swing = createSwing();
     
     if (isLeft)
-        pos.x += PLATFORM_WIDTH * 0.45f;
+        pos.x += plat->getBoundingBox().size.width * 0.45f;
     else
-        pos.x -= PLATFORM_WIDTH * 0.45f;
+        pos.x -= plat->getBoundingBox().size.width * 0.45f;
     
     swing->setPosition(pos);
     swing->runAction(RepeatForever::create(RotateBy::create(2.0f, 360.0f)));
     this->addChild(swing);
-            
+    
+    return plat;
 }
 
-Sprite* PlatformPair::createObstacleSprite(float width, float height, Color3B color) {
-    auto obstacle = Sprite::create();
-    Rect rect = Rect(0, 0, width, height);
-    auto body = PhysicsBody::createBox(rect.size);
+Sprite* PlatformPair::createObstacleSprite(const std::string &fileName, float scaleX, float scaleY) {
+    auto obstacle = Sprite::createWithSpriteFrameName(fileName);
+    obstacle->setScale(scaleX, scaleY);
+    obstacle->getTexture()->setAliasTexParameters();
+    auto body = PhysicsBody::createBox(obstacle->getBoundingBox().size);
     body->setDynamic(false);      // Platforms are not affected by gravity
     body->setCollisionBitmask(0);
     body->setCategoryBitmask(PhysicsGroup::PLATFORM);
     body->setContactTestBitmask(PhysicsGroup::PLAYER);
     obstacle->setPhysicsBody(body);
-    obstacle->setTextureRect(rect);
-    obstacle->setColor(color);
     return obstacle;
 }
 
 Sprite* PlatformPair::createPlatform() {
-    return createObstacleSprite(PLATFORM_WIDTH, PLATFORM_HEIGHT);
+    float scaleFactor = Director::getInstance()->getContentScaleFactor();
+    float scale = 3.0f * scaleFactor;
+    return createObstacleSprite("platform.png", scale, scale);
 }
 
 Sprite* PlatformPair::createSwing() {
-    auto swingBody = Sprite::create();
-    swingBody->setTextureRect(Rect(0, 0, SWING_HANDLE_WIDTH, SWING_HANDLE_HEIGHT));
-    swingBody->setColor(Color3B(0.0f, 255.0f, 0.0f));
+    auto swingBody = Sprite::createWithSpriteFrameName("chain.png");
+    float scale = 3.0f * Director::getInstance()->getContentScaleFactor();
+    swingBody->setScale(scale, scale);
+    swingBody->getTexture()->setAliasTexParameters();
     swingBody->setAnchorPoint(Vec2(0.5f, 0.0f));
-    auto swingHead = createObstacleSprite(SWING_HEAD_WIDTH, SWING_HEAD_HEIGHT);
-    swingHead->setPosition(swingBody->getPositionX() + SWING_HANDLE_WIDTH * 0.5f, SWING_HANDLE_HEIGHT);
+    auto swingHead = createObstacleSprite("asteroid.png", 1.0f, 1.0f);
+    swingHead->setPosition(swingBody->getPositionX() + swingBody->getContentSize().width * 0.5f, swingBody->getContentSize().height + swingHead->getContentSize().height * 0.6f);
     swingBody->addChild(swingHead);
     swingBody->setRotation(45.0f);
     

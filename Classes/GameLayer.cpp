@@ -68,7 +68,7 @@ GameLayer* GameLayer::create() {
 }
 
 bool GameLayer::init() {
-    if (!Layer::init()) { return false; }
+    if (!LayerColor::initWithColor(Color4B(0.0f, 0.0f, 255.0f, 255.0f))) { return false; }
     
     mScreenSize = Director::getInstance()->getWinSize();
     

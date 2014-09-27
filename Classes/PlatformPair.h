@@ -12,10 +12,10 @@ class PlatformPair : public cocos2d::Node {
 private:
     cocos2d::Size mScreenSize;
     
-    void addPlatform(cocos2d::Vec2 pos, bool isLeft);
+    cocos2d::Sprite* addPlatform(cocos2d::Vec2 pos, bool isLeft);
     cocos2d::Sprite* createPlatform();
     cocos2d::Sprite* createSwing();
-    cocos2d::Sprite* createObstacleSprite(float width, float height, cocos2d::Color3B color = cocos2d::Color3B(0, 255, 0));
+    cocos2d::Sprite* createObstacleSprite(const std::string &fileName, float scaleX, float scaleY);
     void addPointZone(cocos2d::Vec2 pos);
     
 public:

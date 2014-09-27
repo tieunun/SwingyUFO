@@ -8,8 +8,6 @@
 
 using namespace cocos2d;
 
-#define PLAYER_HEIGHT 64
-#define PLAYER_WIDTH 64
 #define PLAYER_MAX_VELOCITY 480.0f
 #define PLAYER_IMPULSE 480.0f
 
@@ -30,11 +28,16 @@ Player* Player::create() {
 
 bool Player::init() {
     
-    if (!Sprite::init()) { return false; }
+    auto spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName("player0.png");
     
-    Rect rect = Rect(0.0f, 0.0f, PLAYER_WIDTH, PLAYER_HEIGHT);
+    if (!Sprite::initWithSpriteFrame(spriteFrame)) { return false; }
+
+    float scaleFactor = Director::getInstance()->getContentScaleFactor();
+    float scale = 3.0f * scaleFactor;
+    this->setScale(scale, scale);
+    this->getTexture()->setAliasTexParameters();
     
-    auto body = PhysicsBody::createBox(rect.size);
+    auto body = PhysicsBody::createBox(this->getBoundingBox().size);
     body->setGroup(PhysicsGroup::PLAYER);
     body->setCollisionBitmask(PhysicsGroup::EDGE);
     body->setCategoryBitmask(PhysicsGroup::PLAYER);
@@ -42,8 +45,7 @@ bool Player::init() {
     body->setRotationEnable(false);
     
     this->setPhysicsBody(body);
-    this->setTextureRect(rect);
-    this->setColor(Color3B::BLUE);
+
     this->reset();
     
     return true;
@@ -58,12 +60,12 @@ void Player::reset() {
 void Player::switchDirections() {
     
     switch (mFacingDirection) {
-            
         case LEFT:
             CCLOG("Switching from LEFT to RIGHT");
             this->getPhysicsBody()->setVelocity(Vec2::ZERO);
             this->getPhysicsBody()->applyImpulse(Vec2(PLAYER_IMPULSE, 0));
             mFacingDirection = RIGHT;
+            this->setFlippedX(false);
             break;
             
         case RIGHT:
@@ -71,6 +73,7 @@ void Player::switchDirections() {
             this->getPhysicsBody()->setVelocity(Vec2::ZERO);
             this->getPhysicsBody()->applyImpulse(Vec2(-PLAYER_IMPULSE, 0));
             mFacingDirection = LEFT;
+            this->setFlippedX(true);
             break;
             
         default:

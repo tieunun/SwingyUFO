@@ -9,7 +9,7 @@
 #include "Player.h"
 #include "cocos2d.h"
 
-class GameLayer : public cocos2d::Layer {
+class GameLayer : public cocos2d::LayerColor {
 private:
     typedef enum {
         WaitingForTap,

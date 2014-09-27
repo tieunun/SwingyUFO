@@ -28,7 +28,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     Size screenSize = glview->getFrameSize();
     Size designSize = Size(480, 800);
-    glview->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::FIXED_HEIGHT);
+    glview->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::FIXED_WIDTH);
     Size adjustedSize = director->getWinSize();
     Size visibleSize = director->getVisibleSize();
 
@@ -53,7 +53,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     // Set the scale factor and the search paths
     director->setContentScaleFactor(scale);
-
+    CCLOG("Setting content scale factor to: %f", scale);
     // Turn on display FPS
     director->setDisplayStats(true);
 

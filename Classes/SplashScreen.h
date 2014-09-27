@@ -13,6 +13,7 @@ private:
     float mTimer;
     
     void populateScene();
+    void loadSprites();
     
 public:
     SplashScreen();

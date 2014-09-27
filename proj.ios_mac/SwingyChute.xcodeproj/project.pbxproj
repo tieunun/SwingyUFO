@@ -59,6 +59,10 @@
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
+		C93701D319CE4869002FD894 /* sprite_sheet.plist in Resources */ = {isa = PBXBuildFile; fileRef = C93701D119CE4869002FD894 /* sprite_sheet.plist */; };
+		C93701D419CE4869002FD894 /* sprite_sheet.plist in Resources */ = {isa = PBXBuildFile; fileRef = C93701D119CE4869002FD894 /* sprite_sheet.plist */; };
+		C93701D519CE4869002FD894 /* sprite_sheet.png in Resources */ = {isa = PBXBuildFile; fileRef = C93701D219CE4869002FD894 /* sprite_sheet.png */; };
+		C93701D619CE4869002FD894 /* sprite_sheet.png in Resources */ = {isa = PBXBuildFile; fileRef = C93701D219CE4869002FD894 /* sprite_sheet.png */; };
 		C994231B19BEF35F00A1E772 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C994231919BEF35F00A1E772 /* Player.cpp */; };
 		C994231C19BEF35F00A1E772 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C994231919BEF35F00A1E772 /* Player.cpp */; };
 		C9B18AB819C2D70B00C59EF1 /* SplashScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C9B18AB619C2D70B00C59EF1 /* SplashScreen.cpp */; };
@@ -262,6 +266,8 @@
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C926C95619C2A59400C57954 /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Config.h; path = ../Classes/Config.h; sourceTree = "<group>"; };
+		C93701D119CE4869002FD894 /* sprite_sheet.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = sprite_sheet.plist; sourceTree = "<group>"; };
+		C93701D219CE4869002FD894 /* sprite_sheet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sprite_sheet.png; sourceTree = "<group>"; };
 		C994231919BEF35F00A1E772 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = ../Classes/Player.cpp; sourceTree = "<group>"; };
 		C994231A19BEF35F00A1E772 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = ../Classes/Player.h; sourceTree = "<group>"; };
 		C9B18AB619C2D70B00C59EF1 /* SplashScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SplashScreen.cpp; path = ../Classes/SplashScreen.cpp; sourceTree = "<group>"; };
@@ -471,6 +477,8 @@
 		78C7DDAA14EBA5050085D0C2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C93701D119CE4869002FD894 /* sprite_sheet.plist */,
+				C93701D219CE4869002FD894 /* sprite_sheet.png */,
 			);
 			name = Resources;
 			path = ../Resources;
@@ -642,6 +650,7 @@
 			files = (
 				5087E78117EB970100C73F5D /* Icon-120.png in Resources */,
 				5087E78617EB970100C73F5D /* Icon-76.png in Resources */,
+				C93701D519CE4869002FD894 /* sprite_sheet.png in Resources */,
 				5087E77F17EB970100C73F5D /* Default@2x.png in Resources */,
 				50EF629917ECD46A001EB2F8 /* Icon-100.png in Resources */,
 				5087E78317EB970100C73F5D /* Icon-152.png in Resources */,
@@ -656,6 +665,7 @@
 				5087E78417EB970100C73F5D /* Icon-57.png in Resources */,
 				5087E77E17EB970100C73F5D /* Default.png in Resources */,
 				50EF629717ECD46A001EB2F8 /* Icon-58.png in Resources */,
+				C93701D319CE4869002FD894 /* sprite_sheet.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -664,6 +674,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
+				C93701D419CE4869002FD894 /* sprite_sheet.plist in Resources */,
+				C93701D619CE4869002FD894 /* sprite_sheet.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

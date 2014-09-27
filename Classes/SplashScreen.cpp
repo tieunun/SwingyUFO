@@ -35,9 +35,15 @@ SplashScreen* SplashScreen::create() {
 bool SplashScreen::init() {
     if (!Layer::init()) { return false; }
     
+    this->loadSprites();
     this->populateScene();
     this->scheduleUpdate();
     return true;
+}
+
+void SplashScreen::loadSprites() {
+    auto spriteCache = SpriteFrameCache::getInstance();
+    spriteCache->addSpriteFramesWithFile("sprite_sheet.plist");
 }
 
 void SplashScreen::update(float dt) {
