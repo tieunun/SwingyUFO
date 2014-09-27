@@ -30,18 +30,19 @@ bool PlatformPair::init() {
     
     mScreenSize = Director::getInstance()->getWinSize();
 
-    auto plat = addPlatform();
+    float swingRotation = rand() % 360;
+    auto plat = addPlatform(swingRotation);
     // We must add the platform width to account for anchor points
     Vec2 offset = Vec2(GAP_DISTANCE + plat->getBoundingBox().size.width, 0.0f);
-    auto plat2 = addPlatform(false, plat->getPosition() + offset);
+    auto plat2 = addPlatform(swingRotation, false, plat->getPosition() + offset);
     addPointZone(Vec2((plat->getPosition().x + plat2->getPosition().x) * 0.5f, plat->getPosition().y));
     
     return true;
 }
 
-Sprite* PlatformPair::addPlatform(bool isLeft, Vec2 pos) {
+Sprite* PlatformPair::addPlatform(float swingRotation, bool isLeft, Vec2 pos) {
     auto plat = createPlatform();
-    auto swing = createSwing();
+    auto swing = createSwing(swingRotation);
     this->addChild(plat);
     this->addChild(swing);
     
@@ -88,7 +89,7 @@ Sprite* PlatformPair::createPlatform() {
     return createObstacleSprite("platform.png", scale, scale);
 }
 
-Sprite* PlatformPair::createSwing() {
+Sprite* PlatformPair::createSwing(float rotation) {
     auto swingBody = Sprite::createWithSpriteFrameName("chain.png");
     float scale = 3.0f * Director::getInstance()->getContentScaleFactor();
     swingBody->setScale(scale, scale);
@@ -97,7 +98,7 @@ Sprite* PlatformPair::createSwing() {
     auto swingHead = createObstacleSprite("asteroid.png", 1.0f, 1.0f);
     swingHead->setPosition(swingBody->getPositionX() + swingBody->getContentSize().width * 0.5f, swingBody->getContentSize().height + swingHead->getContentSize().height * 0.6f);
     swingBody->addChild(swingHead);
-    swingBody->setRotation(45.0f);
+    swingBody->setRotation(rotation);
     
     return swingBody;
 }
