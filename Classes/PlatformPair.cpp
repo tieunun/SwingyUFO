@@ -8,11 +8,10 @@
 
 using namespace cocos2d;
 
-#define GAP_DISTANCE 350.0f
+#define GAP_DISTANCE 300.0f
 #define WIDTH_16_9 450.0f
-#define PLATFORM_HEIGHT 32.0f
-#define PLATFORM_WIDTH (600.0f - GAP_DISTANCE)
 #define PLATFORM_TRAVEL_TIME 5.0f
+#define START_PADDING 25.0f
 
 PlatformPair* PlatformPair::create() {
     auto pair = new PlatformPair();
@@ -30,38 +29,34 @@ bool PlatformPair::init() {
     if (!Node::init()) { return false; }
     
     mScreenSize = Director::getInstance()->getWinSize();
-    
-    float minStartX, maxStartX;
-    Vec2 startPos;
-    
-    // The most narrow devices (those with an aspect ratio of 16:9)
-    // will have an adjusted width of 450. On these devices, the gaps
-    // will sometimes reach the outermost edges of the screen, while on
-    // other devices gaps will get close but never fully touch the edges.
-    float halfDiff = (mScreenSize.width - WIDTH_16_9) / 2.0f;
-    float halfWidth = PLATFORM_WIDTH * 0.5f;
-    minStartX = halfDiff - halfWidth;
-    maxStartX = mScreenSize.width - halfDiff - GAP_DISTANCE - halfWidth;
-    
-    // Random number between minStartX and maxStartX
-    startPos.x = (rand() % int(maxStartX - minStartX + 1)) + minStartX;
-    startPos.y = -0.5f * PLATFORM_HEIGHT;
-    
-    auto plat = addPlatform(startPos, true);
+
+    auto plat = addPlatform();
     // We must add the platform width to account for anchor points
-    startPos.x += GAP_DISTANCE + plat->getBoundingBox().size.width;
-    addPlatform(startPos, false);
-    startPos.x -= (GAP_DISTANCE + plat->getBoundingBox().size.width) * 0.5f;
-    addPointZone(startPos);
+    Vec2 offset = Vec2(GAP_DISTANCE + plat->getBoundingBox().size.width, 0.0f);
+    auto plat2 = addPlatform(false, plat->getPosition() + offset);
+    addPointZone(Vec2((plat->getPosition().x + plat2->getPosition().x) * 0.5f, plat->getPosition().y));
     
     return true;
 }
 
-Sprite* PlatformPair::addPlatform(Vec2 pos, bool isLeft) {
+Sprite* PlatformPair::addPlatform(bool isLeft, Vec2 pos) {
     auto plat = createPlatform();
-    plat->setPosition(pos);
-    this->addChild(plat);
     auto swing = createSwing();
+    this->addChild(plat);
+    this->addChild(swing);
+    
+    if (isLeft) {
+        float firstMinStartX, firstMaxStartX;
+        float halfWidth = plat->getBoundingBox().size.width * 0.5f;
+        firstMinStartX = -1.0f * halfWidth + START_PADDING;
+        firstMaxStartX = mScreenSize.width - GAP_DISTANCE - halfWidth - START_PADDING;
+        
+        // Random number between minStartX and maxStartX
+        pos.x = (rand() % int(firstMaxStartX - firstMinStartX + 1)) + firstMinStartX;
+        pos.y -= 0.5f * plat->getBoundingBox().size.height + swing->getBoundingBox().size.height;
+    }
+    
+    plat->setPosition(pos);
     
     if (isLeft)
         pos.x += plat->getBoundingBox().size.width * 0.45f;
@@ -70,7 +65,6 @@ Sprite* PlatformPair::addPlatform(Vec2 pos, bool isLeft) {
     
     swing->setPosition(pos);
     swing->runAction(RepeatForever::create(RotateBy::create(2.0f, 360.0f)));
-    this->addChild(swing);
     
     return plat;
 }
@@ -110,7 +104,7 @@ Sprite* PlatformPair::createSwing() {
 
 void PlatformPair::addPointZone(Vec2 pos) {
     auto zone = Node::create();
-    auto body = PhysicsBody::createBox(Size(GAP_DISTANCE * 0.9f, PLATFORM_HEIGHT * 0.5f));
+    auto body = PhysicsBody::createBox(Size(GAP_DISTANCE * 0.9f, 16.0f));
     body->setDynamic(false);
     body->setCollisionBitmask(0);
     body->setCategoryBitmask(PhysicsGroup::POINT_ZONE);
@@ -121,7 +115,7 @@ void PlatformPair::addPointZone(Vec2 pos) {
 }
 
 void PlatformPair::startMoving() {
-    auto move = MoveBy::create(PLATFORM_TRAVEL_TIME, Vec2(0.0f, mScreenSize.height + PLATFORM_HEIGHT));
+    auto move = MoveBy::create(PLATFORM_TRAVEL_TIME, Vec2(0.0f, mScreenSize.height * 1.5f));
     
     // After moving past the top of the screen, this node will remove itself from the game layer
     auto removeSelf = CallFunc::create([=] {
