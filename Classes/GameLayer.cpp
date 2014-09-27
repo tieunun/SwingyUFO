@@ -10,6 +10,7 @@
 
 using namespace cocos2d;
 
+#define BG_COLOR Color4B(0.0f, 28.0f, 113.0f, 255.0f)
 #define LABEL_MOVE_INTERVAL 0.55f
 #define SCORE_FADE_IN_INTERVAL 1.0f
 #define START_DELAY 1.75f
@@ -68,7 +69,7 @@ GameLayer* GameLayer::create() {
 }
 
 bool GameLayer::init() {
-    if (!LayerColor::initWithColor(Color4B(0.0f, 0.0f, 255.0f, 255.0f))) { return false; }
+    if (!LayerColor::initWithColor(BG_COLOR)) { return false; }
     
     mScreenSize = Director::getInstance()->getWinSize();
     
@@ -149,7 +150,7 @@ void GameLayer::populateScene() {
     
     // Score label
     mScoreLabel = Label::createWithSystemFont("0", "Arial", 50.0f);
-    mScoreLabel->setPosition(Vec2(mScreenSize.width * 0.5f, mScreenSize.height * 0.95f));
+    mScoreLabel->setPosition(Vec2(mScreenSize.width * 0.5f, mScreenSize.height * 0.10f));
     mScoreLabel->setOpacity(0.0f);
     
     // Score will fade in

@@ -10,6 +10,7 @@ using namespace cocos2d;
 
 #define PLAYER_MAX_VELOCITY 480.0f
 #define PLAYER_IMPULSE 480.0f
+#define PLAYER_NUM_SPRITE_FRAMES 2
 
 Player::Player() : mFacingDirection(NEITHER) {
     mScreenSize = Director::getInstance()->getWinSize();
@@ -36,6 +37,19 @@ bool Player::init() {
     float scale = 3.0f * scaleFactor;
     this->setScale(scale, scale);
     this->getTexture()->setAliasTexParameters();
+    
+    // Animation
+    Vector<SpriteFrame*> frames(PLAYER_NUM_SPRITE_FRAMES);
+    for (int i = 0; i < PLAYER_NUM_SPRITE_FRAMES; ++i) {
+        std::ostringstream oss;
+        oss << "player" << i << ".png";
+        auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(oss.str());
+        frames.pushBack(frame);
+    }
+    
+    auto animation = Animation::createWithSpriteFrames(frames, 0.3f);
+    this->runAction(RepeatForever::create(Animate::create(animation)));
+    
     
     auto body = PhysicsBody::createBox(this->getBoundingBox().size);
     body->setGroup(PhysicsGroup::PLAYER);
