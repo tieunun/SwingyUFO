@@ -55,6 +55,8 @@ Sprite* PlatformPair::addPlatform(float swingRotation, bool isLeft, Vec2 pos) {
         // Random number between minStartX and maxStartX
         pos.x = (rand() % int(firstMaxStartX - firstMinStartX + 1)) + firstMinStartX;
         pos.y -= 0.5f * plat->getBoundingBox().size.height + swing->getBoundingBox().size.height;
+    } else {
+        plat->setFlippedX(true);
     }
     
     plat->setPosition(pos);

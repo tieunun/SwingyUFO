@@ -74,7 +74,8 @@ void Player::setUpPhysics() {
 }
 
 void Player::die() {
-    auto spin = RotateBy::create(0.8f, 360.0f);
+    float deg = 360.0f * (mFacingDirection == LEFT ? 1.0f : -1.0f);
+    auto spin = RotateBy::create(0.8f, deg);
     this->runAction(RepeatForever::create(spin));
 }
 
@@ -85,20 +86,23 @@ void Player::switchDirections() {
             CCLOG("Switching from LEFT to RIGHT");
             this->getPhysicsBody()->setVelocity(Vec2::ZERO);
             this->getPhysicsBody()->applyImpulse(Vec2(PLAYER_IMPULSE, 0));
-            mFacingDirection = RIGHT;
-            this->setFlippedX(false);
+            this->setDirection(RIGHT);
             break;
             
         case RIGHT:
             CCLOG("Switching from RIGHT to LEFT");
             this->getPhysicsBody()->setVelocity(Vec2::ZERO);
             this->getPhysicsBody()->applyImpulse(Vec2(-PLAYER_IMPULSE, 0));
-            mFacingDirection = LEFT;
-            this->setFlippedX(true);
+            this->setDirection(LEFT);
             break;
             
         default:
             CCLOG("Not facing any direction, not switching");
             break;
     }
+}
+
+void Player::setDirection(Direction dir) {
+    mFacingDirection = dir;
+    this->setFlippedX(mFacingDirection == LEFT);
 }

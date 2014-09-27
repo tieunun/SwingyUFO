@@ -35,7 +35,7 @@ public:
     void reset();
     void die();
     void switchDirections();
-    void setDirection(Direction dir) { mFacingDirection = dir; }
+    void setDirection(Direction dir);
     Direction getDirection() const { return mFacingDirection; }
 };
 
