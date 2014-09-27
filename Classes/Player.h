@@ -19,6 +19,9 @@ public:
 private:
     cocos2d::Size mScreenSize;
     Direction mFacingDirection;
+    
+    void setUpAnimation();
+    void setUpPhysics();
   
 public:
     Player();
@@ -30,6 +33,7 @@ public:
 
     // etc
     void reset();
+    void die();
     void switchDirections();
     void setDirection(Direction dir) { mFacingDirection = dir; }
     Direction getDirection() const { return mFacingDirection; }

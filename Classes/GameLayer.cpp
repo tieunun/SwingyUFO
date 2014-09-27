@@ -346,6 +346,9 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
                 }
             }
             
+            mPlayer->die();
+            
+            // Move the game over menu into view
             mGameOverLabel->setVisible(true);
             mGameOverLabel->runAction(mGameOverActionIn);
             mGameOverButtons->setVisible(true);
@@ -353,6 +356,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
             mScoreLabel->setPosition(Vec2(mScreenSize.width * 0.5f, mScreenSize.height * 0.5f));
             mScoreLabel->setString("Score: " + mScoreLabel->getString());
             
+            // Check to see if they beat their high-score
             auto userDefault = UserDefault::getInstance();
             int highScore = userDefault->getIntegerForKey(KEY_HIGH_SCORE);
             
@@ -366,8 +370,6 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
             ss << "High score: " <<  highScore;
             mHighScoreLabel->setString(ss.str().c_str());
             mHighScoreLabel->setVisible(true);
-            
-            
         }
         return true;
     }
