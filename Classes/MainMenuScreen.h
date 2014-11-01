@@ -8,7 +8,7 @@
 
 #include "cocos2d.h"
 
-class MainMenuScreen : public cocos2d::Layer {
+class MainMenuScreen : public cocos2d::LayerColor {
 private:
     void populateScene();
     

@@ -10,29 +10,29 @@
 	<string>SwingyChute</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>2D8BB206-BB89-4E7D-90D6-1B08781A663A</key>
+		<key>4464344F393CF7AF2D090801DA2D8909E3338B97</key>
 		<string>https://github.com/cascal/SwingyChute.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>proj.ios_mac/SwingyChute.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>2D8BB206-BB89-4E7D-90D6-1B08781A663A</key>
+		<key>4464344F393CF7AF2D090801DA2D8909E3338B97</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/cascal/SwingyChute.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>2D8BB206-BB89-4E7D-90D6-1B08781A663A</string>
+	<string>4464344F393CF7AF2D090801DA2D8909E3338B97</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>2D8BB206-BB89-4E7D-90D6-1B08781A663A</string>
+			<string>4464344F393CF7AF2D090801DA2D8909E3338B97</string>
 			<key>IDESourceControlWCCName</key>
 			<string>SwingyChute</string>
 		</dict>

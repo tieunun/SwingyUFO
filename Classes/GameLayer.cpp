@@ -10,7 +10,6 @@
 
 using namespace cocos2d;
 
-#define BG_COLOR Color4B(0.0f, 28.0f, 113.0f, 255.0f)
 #define LABEL_MOVE_INTERVAL 0.55f
 #define SCORE_FADE_IN_INTERVAL 1.0f
 #define START_DELAY 1.75f
@@ -215,6 +214,10 @@ void GameLayer::populateScene() {
     // Move the labels into the view of the user
     mGetReadyLabel->runAction(mGetReadyActionIn);
     mTapToStartLabel->runAction(mTapToStartActionIn);
+    
+    // Stars moving in the background
+    auto particle = ParticleSystemQuad::create("stars.plist");
+    this->addChild(particle);
 }
 
 void GameLayer::addEvents() {

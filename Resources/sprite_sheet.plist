@@ -7,7 +7,7 @@
             <key>asteroid.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{22,22}}</string>
+                <string>{{8,2},{22,22}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -20,7 +20,7 @@
             <key>chain.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{26,2},{4,22}}</string>
+                <string>{{2,2},{4,22}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -30,10 +30,49 @@
                 <key>sourceSize</key>
                 <string>{4,22}</string>
             </dict>
+            <key>get_ready.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{172,29},{36,97}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{36,97}}</string>
+                <key>sourceSize</key>
+                <string>{36,97}</string>
+            </dict>
+            <key>home_button.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{98,2},{50,25}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{50,25}}</string>
+                <key>sourceSize</key>
+                <string>{50,25}</string>
+            </dict>
+            <key>home_button_pressed.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{54,29},{50,25}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{50,25}}</string>
+                <key>sourceSize</key>
+                <string>{50,25}</string>
+            </dict>
             <key>platform.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{32,2},{64,11}}</string>
+                <string>{{106,29},{64,11}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -43,10 +82,36 @@
                 <key>sourceSize</key>
                 <string>{64,11}</string>
             </dict>
+            <key>play_button.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{150,2},{50,25}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{50,25}}</string>
+                <key>sourceSize</key>
+                <string>{50,25}</string>
+            </dict>
+            <key>play_button_pressed.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,29},{50,25}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{50,25}}</string>
+                <key>sourceSize</key>
+                <string>{50,25}</string>
+            </dict>
             <key>player0.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{98,2},{31,22}}</string>
+                <string>{{32,2},{31,22}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -59,7 +124,7 @@
             <key>player1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{131,2},{31,22}}</string>
+                <string>{{65,2},{31,22}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -77,9 +142,9 @@
             <key>realTextureFileName</key>
             <string>sprite_sheet.png</string>
             <key>size</key>
-            <string>{164,26}</string>
+            <string>{210,128}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:2c80e21941478d2eaf0b8f466d9699a2:342c6890a4853f23843d83e330e3428c:15058cce2ad93a426e9374343a733a78$</string>
+            <string>$TexturePacker:SmartUpdate:884babe771079baee37e158f44e757c8:6aa05d6532e6ccacce2e1f750e471403:15058cce2ad93a426e9374343a733a78$</string>
             <key>textureFileName</key>
             <string>sprite_sheet.png</string>
         </dict>
